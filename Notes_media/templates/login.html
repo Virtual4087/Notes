@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="m-auto d-flex flex-column gap-3" style="min-width: 200px; width: 30vw;">
+        <h2 class="d-flex justify-content-center gap-1">Log<span style="color:#D13903;"> In</span></h2>
+
+        <form action="{% url 'login' %}" method="post" class="d-flex flex-column gap-3">
+            {% csrf_token %}
+            <div class="form-floating">
+                <input autofocus class="form-control" type="text" name="username" placeholder="username" style="color: black;">
+                <label style="color: #575757;">Username</label>
+            </div>
+            <div class="form-floating">
+                <input class="form-control" type="password" name="password" placeholder="password" style="color: black;">
+                <label style="color: #575757;">Password</label>
+            </div>
+            {% if message %}
+                <div>{{ message }}</div>
+            {% endif %}
+            <input class="btn btn-primary m-auto border-0" type="submit" value="Login" style="background-color:#D13903;">
+        </form>
+        <div class="m-auto" style="font-size: 0.9rem;">Don't have an account? <a href="{% url 'register' %}">Register here.</a></div>
+    </div>
+{% endblock %}
