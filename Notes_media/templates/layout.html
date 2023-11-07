@@ -1,5 +1,7 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <title>Document</title>
 </head>
+
 <body>
     <nav class="bg-blue-500 p-3">
         <div class="flex justify-between">
@@ -29,7 +32,10 @@
             <!-- Notifications -->
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWOeXNuuleSHbdP7mraUDKPG1JEToW6oj4Ag&usqp=CAU" href="#" class="w-10 h-10 " alt="Notifications" />
             <!-- Profile -->
-            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" href="#" class="w-10 h-10" alt="Profile" />
+            <a href="{% url 'profile' %}">
+                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" class="w-10 h-10" alt="Profile" />
+            </a>
+            
           </div>
         </div>
     </nav>
@@ -37,34 +43,27 @@
     <div class="flex h-screen">
         <!-- Sidebar -->
         <div class="w-1/4">
-            <div class="bg-blue-200 flex flex-col h-full items-center p-4">
-                <a href="#" class="px-5 py-2.5 mb-4 relative rounded group overflow-hidden font-medium bg-purple-50 text-purple-600 inline-block">
-                    <span class="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-purple-600 group-hover:h-full opacity-90"></span>
-                    <span class="relative group-hover:text-white">Home</span>
-                </a>
-                <a href="#" class="px-5 py-2.5 mb-4 relative rounded group overflow-hidden font-medium bg-purple-50 text-purple-600 inline-block">
-                    <span class="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-purple-600 group-hover:h-full opacity-90"></span>
-                    <span class="relative group-hover:text-white">Saved</span>
-                </a>
-            </div>
+            <div class="bg-blue-200 h-full p-4">
+                <!-- Buttons -->
+                <div class="items-center flex flex-col">
+                    <a href="{% url 'index' %}" class="px-5 py-2.5 mb-4 relative rounded group overflow-hidden font-medium bg-purple-50 text-purple-600 inline-block">
+                        <span class="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-purple-600 group-hover:h-full opacity-90"></span>
+                        <span class="relative group-hover:text-white">Home</span>
+                    </a>
+                    <a href="#" class="px-5 py-2.5 mb-4 relative rounded group overflow-hidden font-medium bg-purple-50 text-purple-600 inline-block">
+                        <span class="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-purple-600 group-hover:h-full opacity-90"></span>
+                        <span class="relative group-hover:text-white">Saved</span>
+                    </a>
+                </div>
+                <!-- Filter -->
+                <div class="flex">
+                    <h1 class="font-large pl-6 pt-5">Filters</h1>
+                </div>
+            </div>  
+            <!-- Filters -->
             
         </div>
         
-        <!-- Feed -->
-        <div class="w-3/4">
-            <div class="bg-white h-full">
-                <div class="bg-black flex w-90% m-6">
-                    <div class="bg-white">
-                        <a href="#" class="px-5 py-2.5 ml-6 mr-4 relative rounded group overflow-hidden font-medium bg-purple-50 text-purple-600 inline-block">
-                            <span class="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-purple-600 group-hover:h-full opacity-90"></span>
-                            <span class="relative group-hover:text-white">Saved</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     {% if user.is_authenticated %}
         <div>signed in as <b>{{user.username}}</b></div>
         <a href="{% url 'logout' %}">Logout</a>
