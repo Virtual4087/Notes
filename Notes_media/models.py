@@ -35,7 +35,7 @@ class User(AbstractUser):
 
 
 class Image(models.Model):
-    image = models.ImageField(upload_to="Notes_media/images")
+    image = models.ImageField(upload_to="images")
 
 
 class Post(models.Model):
@@ -43,7 +43,7 @@ class Post(models.Model):
     title = models.CharField(max_length=100, blank=False)
     description = models.TextField(blank=False)
     image = models.ManyToManyField(Image, blank=True)
-    file = models.FileField(blank=True)
+    file = models.FileField(blank=True, upload_to="pdf_files")
     like = models.ManyToManyField(User, blank=True, related_name="liked_posts")
     date = models.DateTimeField(auto_now_add=True)
 

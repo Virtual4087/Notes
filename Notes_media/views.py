@@ -5,47 +5,55 @@ from django.db import IntegrityError
 from .models import User, Post, Image
 from django.contrib.auth import login, logout, authenticate
 import magic
+from django.contrib import messages
 
-
-# Create your views here.
 def index(request):
     if request.method == "POST":
         title = request.POST["title"]
         description = request.POST["description"]
-        image = request.FILES["image"]
-        file = request.FILES["pdf_file"]
-        if file:
+
+        try:
+            post = Post.objects.create(
+                user=request.user, title=title, description=description
+            )
+            post.save()
+
+        except:
+            messages.error(request, "An error occurred. Couldn't post!")
+            return redirect("index")
+        
+        if "pdf_file" in request.FILES:
+            file = request.FILES["pdf_file"]
             mime = magic.Magic()
             file_type = mime.from_buffer(file.read())
 
-            if not "PDF" in file_type:
-                return render(
-                    request,
-                    "index.html",
-                    {
-                        "message": "You can only upload a pdf file!",
-                        "posts": Post.objects.all(),
-                    },
-                )
-        try:
-            post_image = Image.objects.create(image=image)
-            post_image.save()
-            post = Post.objects.create(
-                user=request.user, title=title, description=description, file=file
-            )
-            post.save()
-            post.image.add(post_image)
-            return redirect("index")
+            if "PDF" in file_type:
+                post.file = file
+                post.save()
 
-        except:
-            return render(
-                request,
-                "index.html",
-                {
-                    "message": "An error occurred. Couldn't post!",
-                    "posts": Post.objects.all(),
-                },
-            )
+            else:
+                post.delete()
+                messages.error(request, "Error while uploading pdf file!")
+                return redirect("index")
+
+        if "image" in request.FILES:
+            image = request.FILES["image"]
+            mime = magic.Magic()
+            file_type = mime.from_buffer(image.read())
+            if not "image" in file_type:
+                post.delete()
+                messages.error(request, "Error while uploading image!")
+                return redirect("index")
+            
+            try:
+                post_image = Image.objects.create(image=image)
+                post_image.save()
+                post.image.add(post_image)
+            except:
+                post.delete()
+                messages.error(request, "Error while uploading image!")
+                return redirect("index")
+        return redirect("index")
 
     return render(request, "index.html", {"posts": Post.objects.all()})
 

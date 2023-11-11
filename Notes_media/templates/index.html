@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
     {% if user.is_authenticated %}
-        <form action="{% url 'index' %}" method="post" enctype="multipart/form-data">
+        <form action="{% url 'index' %}" method="post" enctype="multipart/form-data" autocomplete="off">
             {% csrf_token %}
             <label for="title">Title</label>
             <input type="text" name="title" required>
@@ -17,7 +17,11 @@
             <br>
             <input type="submit">
         </form>
-        {{message}}
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
     {% endif %}
     <div>
         {% for post in posts %}
