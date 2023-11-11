@@ -6,14 +6,25 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://kit.fontawesome.com/a5bfed6ea6.js" crossorigin="anonymous"></script>
+        <style type="text/tailwindcss">
+            @layer utilities {
+              .primary-c {
+                background-color: #6A994E;
+              }
+              .secondary-c{
+                background-color: #003E1F;
+              }
+            }
+
+          </style>
         <title>Document</title>
     </head>
 
-    <body>
-        <nav class="bg-blue-500 p-3 fixed w-full z-20">
+    <body class="h-screen overflow-hidden flex">
+        <nav class="primary-c p-3 fixed w-full z-20">
             <div class="flex justify-between">
                 <!-- Logo -->
-                <a href="#" class="text-white text-2xl font-bold text-center"
+                <a href="#" class="text-white text-4xl font-bold text-center"
                     >Notebook</a
                 >
                 <!-- Search Bar -->
@@ -68,27 +79,49 @@
             </div>
         </nav>
 
-        <div class="h-screen w-1/5 bg-blue-200 pt-28 fixed z-10 hidden lg:block">
+        <div class="h-screen p-relative w-1/5 secondary-c pt-28 fixed z-10 hidden lg:block text-white">
             <!-- Buttons -->
-            <div class="items-center flex flex-col">
-                <a
-                    href="{% url 'index' %}"
-                    class="px-5 py-2.5 mb-4 relative rounded group overflow-hidden font-medium bg-purple-50 text-purple-600 inline-block"
-                >
-                    <span
-                        class="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-purple-600 group-hover:h-full opacity-90"
-                    ></span>
-                    <span class="relative group-hover:text-white">Home</span>
+            <div class="items-center flex flex-col justify-center">
+                <a href="#" class="bg-opacity-50 mt-1 group flex items-center w-3/4 px-4 py-3 mb-3 text-base bg-lime-100 leading-6 font-medium rounded-full hover:bg-green-900 hover:text-green-300">
+                    <svg class="mr-4 h-6 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h3a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h3a1 1 0 001-1V10M9 21h6"></path>
+                    </svg>
+                    Home
                 </a>
-                <a
-                    href="#"
-                    class="px-5 py-2.5 mb-4 relative rounded group overflow-hidden font-medium bg-purple-50 text-purple-600 inline-block"
-                >
-                    <span
-                        class="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-purple-600 group-hover:h-full opacity-90"
-                    ></span>
-                    <span class="relative group-hover:text-white">Saved</span>
+                <a href="#" class="bg-opacity-50 mt-1 group flex items-center w-3/4 px-4 py-3 mb-3 text-base bg-lime-100 leading-6 font-medium rounded-full hover:bg-green-900 hover:text-green-300">
+                    <svg class="mr-4 h-6 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                    </svg>
+                    Bookmarks
                 </a>
+            </div>
+            <div class="flex flex-col ml-8 p-2 text-white">
+                <h1 class="font-bold font-large mt-8">Subject</h1>
+                <div class="flex items-center mt-2">
+                    <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <label for="default-checkbox" class="ms-2 text-sm font-medium">Math</label>
+                </div>  
+                <div class="flex items-center mt-2">
+                    <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <label for="default-checkbox" class="ms-2 text-sm font-medium">Physics</label>
+                </div>
+                <div class="flex items-center mt-2">
+                    <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <label for="default-checkbox" class="ms-2 text-sm font-medium">Computer Science</label>
+                </div>
+                <h1 class="font-bold font-large mt-12">Grade Level</h1>
+                <div class="flex items-center mt-2">
+                    <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <label for="default-checkbox" class="ms-2 text-sm font-medium">1-10</label>
+                </div>
+                <div class="flex items-center mt-2">
+                    <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <label for="default-checkbox" class="ms-2 text-sm font-medium">+2</label>
+                </div>
+                <div class="flex items-center mt-2">
+                    <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <label for="default-checkbox" class="ms-2 text-sm font-medium">Bachelors</label>
+                </div>
             </div>
             {% if user.is_authenticated %}
                 <div>signed in as <b>{{user.username}}</b></div>
