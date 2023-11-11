@@ -61,7 +61,9 @@
                     {% endif %}
                     <span id="like-count">{{post.like.count}}</span>
                 </div>
+                {% if user == post.user %}
                 <button id="delete_post">Delete</button>
+                {% endif %}
             </div>
             <br>
             <br>
