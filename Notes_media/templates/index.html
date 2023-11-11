@@ -10,7 +10,7 @@
             <textarea name="description" id="" cols="30" rows="10" required></textarea>
             <br>
             <label for="image">Images</label>
-            <input type="file" name="image" accept="image/*">
+            <input type="file" name="image" accept="image/*" multiple>
             <br>
             <label for="pdf_file">Pdf file</label>
             <input type="file" name="pdf_file" accept=".pdf">
@@ -25,7 +25,7 @@
     {% endif %}
     <div>
         {% for post in posts %}
-            <div id={{post.id}} class="p-2 bg-blue-200 width-screen mr-8 rounded-lg">
+            <div id={{post.id}} class="p-2 bg-blue-200 width-screen mr-8 rounded-lg" data-csrf="{{csrf_token}}">
                 <div class="flex p-2 items-align text-lg">
                     <a href="#" class="mr-4">
                         <img
@@ -44,7 +44,11 @@
                     {{post.description}}
                 </div>
                 {% if post.image %}
-                    <img src="{{post.image.first.image.url}}" width="200px">
+                    <div class="flex gap-3">
+                        {% for image in post.image.all %}
+                            <img src="{{image.image.url}}" width="200px">
+                        {% endfor %}
+                    </div>
                 {% endif %}
                 {% if post.file %}
                     <div><a href="{{post.file.url}}" download="">download</a></div>
@@ -62,7 +66,7 @@
                     <span id="like-count">{{post.like.count}}</span>
                 </div>
                 {% if user == post.user %}
-                <button id="delete_post">Delete</button>
+                    <button id="delete_post">Delete</button>
                 {% endif %}
             </div>
             <br>

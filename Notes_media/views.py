@@ -38,26 +38,26 @@ def index(request):
                 return redirect("index")
 
         if "image" in request.FILES:
-            image = request.FILES["image"]
-            mime = magic.Magic()
-            file_type = mime.from_buffer(image.read())
-            if not "image" in file_type:
-                post.delete()
-                messages.error(request, "Error while uploading image!")
-                return redirect("index")
+            images = request.FILES.getlist("image")
+            for image in images:
+                mime = magic.Magic()
+                file_type = mime.from_buffer(image.read())
+                if not "image" in file_type:
+                    post.delete()
+                    messages.error(request, "Error while uploading image!")
+                    return redirect("index")
             
-            try:
-                post_image = Image.objects.create(image=image)
-                post_image.save()
-                post.image.add(post_image)
-            except:
-                post.delete()
-                messages.error(request, "Error while uploading image!")
-                return redirect("index")
+                try:
+                    post_image = Image.objects.create(image=image)
+                    post_image.save()
+                    post.image.add(post_image)
+                except:
+                    post.delete()
+                    messages.error(request, "Error while uploading image!")
+                    return redirect("index")
         return redirect("index")
 
     return render(request, "index.html", {"posts": Post.objects.all()})
-
 
 def register(request):
     if request.method == "POST":
