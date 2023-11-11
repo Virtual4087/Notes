@@ -25,7 +25,7 @@
     {% endif %}
     <div>
         {% for post in posts %}
-            <div id={{post.id}} style="padding: 20px; background-color: azure; width: 100%;">
+            <div id={{post.id}} style="padding: 20px; background-color: azure; width: 100%;" data-csrf="{{csrf_token}}">
                 <div>{{post.user.username}}</div>
                 <div>{{post.date}}</div>
                 <div>{{post.title}}</div>
@@ -36,10 +36,82 @@
                 {% if post.file %}
                     <div><a href="{{post.file.url}}" download="">download</a></div>
                 {% endif %}
-                <div>likes = {{post.like.count}}</div>
+                <div class="select-none">
+                    {% if user.is_authenticated %}
+                        {% if user in post.like.all %}
+                            <i class="fa-solid fa-thumbs-up cursor-pointer like-unlike" id="unlike"></i>
+                        {% else %}
+                            <i class="fa-regular fa-thumbs-up cursor-pointer like-unlike" id="like"></i>
+                        {% endif %}
+                    {% else %}
+                        <i class="fa-regular fa-thumbs-up"></i>
+                    {% endif %}
+                    <span id="like-count">{{post.like.count}}</span>
+                </div>
+                <button id="delete_post">Delete</button>
             </div>
             <br>
             <br>
         {% endfor %}
     </div>
+    <script>
+        const like_buttons = document.querySelectorAll(".like-unlike")
+        const delete_buttons = document.querySelectorAll("#delete_post")
+        like_buttons.forEach((like) =>{
+            like.addEventListener("click", () => {
+                const post = like.parentElement.parentElement
+                const like_count = post.querySelector("#like-count")
+                fetch(`/${post.id}/edit`, {
+                    method : "POST",
+                    headers : {
+                        "Source" : "like_unlike",
+                        "Content-Type" : "application/json",
+                        "X-CSRFToken" : post.dataset.csrf
+                    },
+                    body : JSON.stringify({
+                        perform : like.id
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                })
+                if (like.id == "like"){
+                    like.id = "unlike"
+                    like.classList.remove("fa-regular")
+                    like.classList.add("fa-solid")
+                    like_count.innerText = parseInt(like_count.innerText) + 1
+                }
+                else{
+                    like.id = "like"
+                    like.classList.remove("fa-solid")
+                    like.classList.add("fa-regular")
+                    like_count.innerText = parseInt(like_count.innerText) - 1
+                }
+            })
+        })
+
+        delete_buttons.forEach((button) => {
+            button.addEventListener("click", () => {
+                const post = button.parentElement
+                post.style.display = "none";
+                fetch(`/${post.id}/edit`, {
+                        method : "DELETE",
+                        headers : {
+                            "Source" : "delete_post",
+                            "Content-Type" : "application/json",
+                            "X-CSRFToken" : post.dataset.csrf
+                        },
+                        body : JSON.stringify({
+                            perform : "delete"
+                        })
+                    })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                })
+            })
+        })
+        
+    </script>
 {% endblock %}

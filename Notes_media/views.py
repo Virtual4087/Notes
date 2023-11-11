@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.urls import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.db import IntegrityError
 from .models import User, Post, Image
 from django.contrib.auth import login, logout, authenticate
 import magic
 from django.contrib import messages
+import json
 
 def index(request):
     if request.method == "POST":
@@ -110,3 +111,33 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("index")
+
+def edit(request, post_id):
+    if request.method == "POST":
+        try:
+            post = Post.objects.get(id=post_id)
+            data = json.loads(request.body.decode('utf-8'))
+            if data.get("perform") == "unlike":
+                post.like.remove(request.user)
+            else:
+                post.like.add(request.user)
+            return JsonResponse({"success" : True})
+        except:
+            return JsonResponse({"success" : False})
+    
+    elif request.method == "DELETE":
+        try:
+            post = Post.objects.get(id=post_id)
+            if post.user == request.user:
+                for image in post.image.all():
+                    image.image.delete()
+                post.file.delete()
+                post.delete()
+                return JsonResponse({"success" : True})
+            else:
+                return JsonResponse({"success" : False})
+        except:
+            return JsonResponse({"success" : False})
+
+
+
