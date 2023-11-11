@@ -25,18 +25,31 @@
     {% endif %}
     <div>
         {% for post in posts %}
-            <div id={{post.id}} style="padding: 20px; background-color: azure; width: 100%;">
-                <div>{{post.user.username}}</div>
-                <div>{{post.date}}</div>
-                <div>{{post.title}}</div>
-                <div style="white-space: pre-line; word-wrap: break-word;">{{post.description}}</div>
+            <div id={{post.id}} class="p-2 bg-blue-200 width-screen mr-8 rounded-lg">
+                <div class="flex p-2 items-align text-lg">
+                    <a href="#" class="mr-4">
+                        <img
+                            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                            class="w-14 h-14 rounded-full"
+                            alt="Profile"
+                        />
+                    </a>
+                    {{post.user.username}}
+                </div>
+                
+                <div class="text-4xl ml-2 mb-2">
+                    {{post.title}}
+                </div>
+                <div class="whitespace-normal break-all ml-2 mb-2">
+                    {{post.description}}
+                </div>
                 {% if post.image %}
                     <img src="{{post.image.first.image.url}}" width="200px">
                 {% endif %}
                 {% if post.file %}
                     <div><a href="{{post.file.url}}" download="">download</a></div>
                 {% endif %}
-                <div>likes = {{post.like.count}}</div>
+                <div>likes = {{post.like.count}} {{post.date}}</div>
             </div>
             <br>
             <br>
