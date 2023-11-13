@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.urls import reverse
 from django.http import HttpResponse, JsonResponse
 from django.db import IntegrityError
-from .models import User, Post, Image
+from .models import User, Post, Image, Comment
 from django.contrib.auth import login, logout, authenticate
 import magic
 from django.contrib import messages
@@ -38,26 +38,28 @@ def index(request):
                 return redirect("index")
 
         if "image" in request.FILES:
-            image = request.FILES["image"]
-            mime = magic.Magic()
-            file_type = mime.from_buffer(image.read())
-            if not "image" in file_type:
-                post.delete()
-                messages.error(request, "Error while uploading image!")
-                return redirect("index")
+            images = request.FILES.getlist("image")
+            for image in images:
+                mime = magic.Magic()
+                file_type = mime.from_buffer(image.read())
+                if not "image" in file_type:
+                    post.delete()
+                    messages.error(request, "Error while uploading image!")
+                    return redirect("index")
             
-            try:
-                post_image = Image.objects.create(image=image)
-                post_image.save()
-                post.image.add(post_image)
-            except:
-                post.delete()
-                messages.error(request, "Error while uploading image!")
-                return redirect("index")
+                try:
+                    post_image = Image.objects.create(image=image)
+                    post_image.save()
+                    post.image.add(post_image)
+                except:
+                    post.delete()
+                    messages.error(request, "Error while uploading image!")
+                    return redirect("index")
         return redirect("index")
+    
+    
 
     return render(request, "index.html", {"posts": Post.objects.all()})
-
 
 def register(request):
     if request.method == "POST":
@@ -112,22 +114,49 @@ def logout_view(request):
     logout(request)
     return redirect("index")
 
-def edit(request, post_id):
-    if request.method == "POST":
-        try:
-            post = Post.objects.get(id=post_id)
-            data = json.loads(request.body.decode('utf-8'))
-            if data.get("perform") == "unlike":
-                post.like.remove(request.user)
-            else:
-                post.like.add(request.user)
-            return JsonResponse({"success" : True})
-        except:
-            return JsonResponse({"success" : False})
+def post(request, post_id):
+    post = Post.objects.get(id=post_id)
+
+    if request.method == "GET":
+        return render(request, "post.html", {
+            "post" : post
+        })
+
+    elif request.method == "POST":
+        source = request.headers.get("Source")
+        if source == "like_unlike":
+            try:
+                data = json.loads(request.body.decode('utf-8'))
+                if data.get("perform") == "unlike":
+                    post.like.remove(request.user)
+                else:
+                    post.like.add(request.user)
+                return JsonResponse({"success" : True})
+            except:
+                return JsonResponse({"success" : False})
+            
+        elif source == "post_comment":
+            try:
+                data = request.body.decode('utf-8')
+                comment = Comment.objects.create(user=request.user, post=post, comment=data)
+                comment.save()
+                return JsonResponse({"success" : True})
+            except:
+                return JsonResponse({"success" : False})
+        
+        elif source == "save_post":
+            try:
+                data = json.loads(request.body.decode('utf-8'))
+                if data == "save":
+                    request.user.saved_post.add(post)
+                else:
+                    request.user.saved_post.remove(post)
+                return JsonResponse({"success" : True})
+            except:
+                return JsonResponse({"success" : False})
     
     elif request.method == "DELETE":
         try:
-            post = Post.objects.get(id=post_id)
             if post.user == request.user:
                 for image in post.image.all():
                     image.image.delete()
