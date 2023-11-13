@@ -27,7 +27,7 @@
         {% for post in posts %}
             <div id={{post.id}} class="p-2 bg-blue-200 width-screen mr-8 rounded-lg" data-csrf="{{csrf_token}}">
                 <div class="flex p-2 items-align text-lg">
-                    <a href="#" class="mr-4">
+                    <a href="{% url 'post' post.id%}" class="mr-4">
                         <img
                             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                             class="w-14 h-14 rounded-full"
@@ -36,7 +36,8 @@
                     </a>
                     {{post.user.username}}
                 </div>
-                
+                <div>Category - {{post.category.category}}</div>
+                <div>Level - {{post.level.level}}</div>
                 <div class="text-4xl ml-2 mb-2">
                     {{post.title}}
                 </div>
@@ -73,64 +74,6 @@
             <br>
         {% endfor %}
     </div>
-    <script>
-        const like_buttons = document.querySelectorAll(".like-unlike")
-        const delete_buttons = document.querySelectorAll("#delete_post")
-        like_buttons.forEach((like) =>{
-            like.addEventListener("click", () => {
-                const post = like.parentElement.parentElement
-                const like_count = post.querySelector("#like-count")
-                fetch(`/${post.id}/edit`, {
-                    method : "POST",
-                    headers : {
-                        "Source" : "like_unlike",
-                        "Content-Type" : "application/json",
-                        "X-CSRFToken" : post.dataset.csrf
-                    },
-                    body : JSON.stringify({
-                        perform : like.id
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data)
-                })
-                if (like.id == "like"){
-                    like.id = "unlike"
-                    like.classList.remove("fa-regular")
-                    like.classList.add("fa-solid")
-                    like_count.innerText = parseInt(like_count.innerText) + 1
-                }
-                else{
-                    like.id = "like"
-                    like.classList.remove("fa-solid")
-                    like.classList.add("fa-regular")
-                    like_count.innerText = parseInt(like_count.innerText) - 1
-                }
-            })
-        })
-
-        delete_buttons.forEach((button) => {
-            button.addEventListener("click", () => {
-                const post = button.parentElement
-                post.style.display = "none";
-                fetch(`/${post.id}/edit`, {
-                        method : "DELETE",
-                        headers : {
-                            "Source" : "delete_post",
-                            "Content-Type" : "application/json",
-                            "X-CSRFToken" : post.dataset.csrf
-                        },
-                        body : JSON.stringify({
-                            perform : "delete"
-                        })
-                    })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data)
-                })
-            })
-        })
-        
-    </script>
+    {% load static %}
+    <script src="{% static 'js/post.js' %}"></script>
 {% endblock %}

@@ -1,0 +1,134 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block body %}
+    <div id={{post.id}} class="p-2 bg-blue-200 width-screen mr-8 rounded-lg" data-csrf="{{csrf_token}}">
+        <div class="flex p-2 items-align text-lg">
+            <a href="#" class="mr-4">
+                <img
+                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                    class="w-14 h-14 rounded-full"
+                    alt="Profile"
+                />
+            </a>
+            {{post.user.username}}
+        </div>
+        {% if user.is_authenticated %}
+            {% if user in post.saved_by.all %}
+                <button type="button" id="unsave" onclick="save_post(event)">Unsave post</button>
+            {% else %}
+                <button type="button" id="save" onclick="save_post(event)">Save post</button>
+            {% endif %}
+        {% endif %}
+        <div class="text-4xl ml-2 mb-2">
+            {{post.title}}
+        </div>
+        <div class="whitespace-normal break-all ml-2 mb-2">
+            {{post.description}}
+        </div>
+        {% if post.image %}
+            <div class="flex gap-3">
+                {% for image in post.image.all %}
+                    <img src="{{image.image.url}}" width="200px">
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if post.file %}
+            <div><a href="{{post.file.url}}" download="">download</a></div>
+        {% endif %}
+        <div class="select-none">
+            {% if user.is_authenticated %}
+                {% if user in post.like.all %}
+                    <i class="fa-solid fa-thumbs-up cursor-pointer like-unlike" id="unlike"></i>
+                {% else %}
+                    <i class="fa-regular fa-thumbs-up cursor-pointer like-unlike" id="like"></i>
+                {% endif %}
+            {% else %}
+                <i class="fa-regular fa-thumbs-up"></i>
+            {% endif %}
+            <span id="like-count">{{post.like.count}}</span>
+        </div>
+        {% if user == post.user %}
+            <button id="delete_post">Delete</button>
+        {% endif %}
+    </div>
+    {% if user.is_authenticated %}
+    <div>
+        <label>Add Comment</label>
+        <textarea name="comment" id="post_comment"></textarea>
+        <button type="button" onclick="post_comment('{{post.id}}', '{{csrf_token}}')">Post Comment</button>
+    </div>
+    {% endif %}
+    <div>Comments</div>
+    <br>
+    {% if post.post_comments.all %}
+        {% for comment in post.post_comments.all %}
+            <h1>{{comment.user.username}}</h1>
+            <div class="whitespace-normal break-all ml-2 mb-2">
+                {{comment.comment}}
+            </div>
+            <br>
+        {% endfor %}
+    {% else %}
+        <div>None</div>
+    {% endif %}
+    <script src="{% static 'js/post.js' %}"></script>
+    <script>
+        function post_comment(id, csrf){
+            const comment = document.querySelector("#post_comment")
+            fetch(`/post/${id}`, {
+                method : "POST",
+                headers : {
+                    "Source" : "post_comment",
+                    "Content-Type" : "application/json",
+                    "X-CSRFToken" : csrf
+                },
+                body : comment.value
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                if (data.success == true){
+                    comment.value = ""
+                }
+                else{
+                    alert("error while posting comment")
+                }
+            })
+        }
+
+        function save_post(event){
+            const save_button = event.target
+            const post = save_button.parentElement
+            
+            fetch(`/post/${post.id}`, {
+                method : "POST",
+                headers : {
+                    "Source" : "save_post",
+                    "Content-Type" : "application/json",
+                    "X-CSRFToken" : post.dataset.csrf
+                },
+                body : JSON.stringify({
+                    perform : save_button.id
+                }) 
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                if (data.success == true){
+                    if (save_button.id == "save"){
+                        save_button.innerText = "Unsave post"
+                        save_button.id = "unsave"
+                    }
+                    else{
+                        save_button.innerText = "Save post"
+                        save_button.id = "save"
+                    }
+                }
+                else{
+                    alert("error while posting comment")
+                }
+            })
+        }
+    </script>
+{% endblock %}
