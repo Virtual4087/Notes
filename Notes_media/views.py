@@ -140,4 +140,6 @@ def edit(request, post_id):
             return JsonResponse({"success" : False})
 
 
+# def profile(request, user_id):
 
+#     return redirect("profile")
