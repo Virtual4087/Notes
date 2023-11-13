@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.urls import reverse
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpRequest
 from django.db import IntegrityError
 from .models import User, Post, Image, Comment
 from django.contrib.auth import login, logout, authenticate
@@ -8,58 +8,17 @@ import magic
 from django.contrib import messages
 import json
 
-def index(request):
-    if request.method == "POST":
-        title = request.POST["title"]
-        description = request.POST["description"]
-
-        try:
-            post = Post.objects.create(
-                user=request.user, title=title, description=description
-            )
-            post.save()
-
-        except:
-            messages.error(request, "An error occurred. Couldn't post!")
-            return redirect("index")
-        
-        if "pdf_file" in request.FILES:
-            file = request.FILES["pdf_file"]
-            mime = magic.Magic()
-            file_type = mime.from_buffer(file.read())
-
-            if "PDF" in file_type:
-                post.file = file
-                post.save()
-
-            else:
-                post.delete()
-                messages.error(request, "Error while uploading pdf file!")
-                return redirect("index")
-
-        if "image" in request.FILES:
-            images = request.FILES.getlist("image")
-            for image in images:
-                mime = magic.Magic()
-                file_type = mime.from_buffer(image.read())
-                if not "image" in file_type:
-                    post.delete()
-                    messages.error(request, "Error while uploading image!")
-                    return redirect("index")
-            
-                try:
-                    post_image = Image.objects.create(image=image)
-                    post_image.save()
-                    post.image.add(post_image)
-                except:
-                    post.delete()
-                    messages.error(request, "Error while uploading image!")
-                    return redirect("index")
-        return redirect("index")
-    
-    
-
-    return render(request, "index.html", {"posts": Post.objects.all()})
+def index(request: HttpRequest):
+    parameters = request.GET
+    try:
+        sortby = parameters['sort']
+        if sortby == 'new':
+            posts = Post.objects.all().order_by('-date')
+        elif sortby == 'top':
+            posts = Post.objects.all().order_by('-like')
+    except:
+        posts = Post.objects.all()    
+    return render(request, "index.html", {"posts": posts})
 
 def register(request):
     if request.method == "POST":
@@ -167,8 +126,66 @@ def post(request, post_id):
                 return JsonResponse({"success" : False})
         except:
             return JsonResponse({"success" : False})
+        
+def createpost(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            title = request.POST["title"]
+            description = request.POST["description"]
 
+            try:
+                post = Post.objects.create(
+                    user=request.user, title=title, description=description
+                )
+                post.save()
 
-# def profile(request, user_id):
+            except:
+                messages.error(request, "An error occurred. Couldn't post!")
+                return redirect("create")
+            
+            if "pdf_file" in request.FILES:
+                file = request.FILES["pdf_file"]
+                mime = magic.Magic()
+                file_type = mime.from_buffer(file.read())
 
-#     return redirect("profile")
+                if "PDF" in file_type:
+                    post.file = file
+                    post.save()
+
+                else:
+                    post.delete()
+                    messages.error(request, "Error while uploading pdf file!")
+                    return redirect("create")
+
+            if "image" in request.FILES:
+                images = request.FILES.getlist("image")
+                for image in images:
+                    mime = magic.Magic()
+                    file_type = mime.from_buffer(image.read())
+                    if not "image" in file_type:
+                        post.delete()
+                        messages.error(request, "Error while uploading image!")
+                        return redirect("create")
+                
+                    try:
+                        post_image = Image.objects.create(image=image)
+                        post_image.save()
+                        post.image.add(post_image)
+                    except:
+                        post.delete()
+                        messages.error(request, "Error while uploading image!")
+                        return redirect("create")
+            return redirect("index")
+        return render(request, 'create-post.html')
+    else:
+        return redirect('index')
+    
+def profile(request, username):
+    try:
+        user = User.objects.get(username=username)
+    except:
+        user = None
+    return render(request, 'profile.html', {
+        'profile': user
+    })
+    

@@ -7,4 +7,6 @@ urlpatterns = [
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
     path("post/<int:post_id>", views.post, name="post"),
+    path("create-post", views.createpost, name="create"),
+    path("profile/<str:username>", views.profile, name="profile"),
 ]
