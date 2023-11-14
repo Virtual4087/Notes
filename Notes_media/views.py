@@ -108,7 +108,7 @@ def post(request, post_id):
         elif source == "save_post":
             try:
                 data = json.loads(request.body.decode('utf-8'))
-                if data['perform'] == "save":
+                if data["perform"] == "save":
                     request.user.saved_post.add(post)
                 else:
                     request.user.saved_post.remove(post)
