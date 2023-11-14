@@ -20,7 +20,7 @@ class Level(models.Model):
 
 class User(AbstractUser):
     level = models.ForeignKey(
-        Level, on_delete=models.SET_NULL, related_name="users_of_this_level", null=True
+        Level, on_delete=models.SET_NULL, related_name="users_of_this_level", null=True, blank=True
     )
     category = models.ManyToManyField(
         Category, blank=True, related_name="users_of_this_category"

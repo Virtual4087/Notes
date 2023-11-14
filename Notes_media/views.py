@@ -12,7 +12,9 @@ def index(request: HttpRequest):
     parameters = request.GET
     try:
         sortby = parameters['sort']
-        if sortby == 'new':
+        if sortby == 'saved':
+            posts = request.user.saved_post.all()
+        elif sortby == 'new':
             posts = Post.objects.all().order_by('-date')
         elif sortby == 'top':
             posts = Post.objects.all().order_by('-like')
@@ -106,7 +108,7 @@ def post(request, post_id):
         elif source == "save_post":
             try:
                 data = json.loads(request.body.decode('utf-8'))
-                if data == "save":
+                if data["perform"] == "save":
                     request.user.saved_post.add(post)
                 else:
                     request.user.saved_post.remove(post)
