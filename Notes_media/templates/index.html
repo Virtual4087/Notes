@@ -24,9 +24,9 @@
     </div>
     <div>
         {% for post in posts %}
-            <div id={{post.id}} class="p-2 bg-blue-200 width-screen mr-4 rounded-lg" data-csrf="{{csrf_token}}">
-                <div class="flex flex-row p-2 items-align text-lg">
-                    <a href="{% url 'profile' post.user.username%}" class=" ml-2 mr-4">
+            <div id={{post.id}} class="p-4 px-6 bg-blue-200 width-screen rounded-lg" data-csrf="{{csrf_token}}">
+                <div class="flex flex-row items-align text-lg">
+                    <a href="{% url 'profile' post.user.username%}" class="mr-4">
                         <img
                             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                             class="w-14 h-14 rounded-full"
@@ -39,7 +39,7 @@
                     
                 </div>
                 <a href="{% url 'post' post.id%}">
-                    <div class="text-4xl flex flex-col ml-4 mb-2">
+                    <div class="text-4xl flex flex-col mt-2">
                         <div class="">
                             {{post.title}}
                         </div>
@@ -52,7 +52,7 @@
                             </a>
                         </div> 
                     </div>
-                    <div class="whitespace-normal break-all ml-4 mb-2 mr-8">
+                    <div class="whitespace-normal break-all mb-2">
                         {{post.description}}
                     </div>
                 </a>
@@ -66,7 +66,7 @@
                 {% if post.file %}
                     <div><a href="{{post.file.url}}" download="">download</a></div>
                 {% endif %}
-                <div class="select-none ml-4 m-2">
+                <div class="select-none mx-1 flex-row">
                     {% if user.is_authenticated %}
                         {% if user in post.like.all %}
                             <i class="fa-solid fa-thumbs-up cursor-pointer like-unlike" id="unlike"></i>
@@ -81,6 +81,9 @@
                 {% if user == post.user %}
                     <button id="delete_post">Delete</button>
                 {% endif %}
+                <div class="mx-1">
+                    Comments
+                </div>
             </div>
             <br>
         {% endfor %}

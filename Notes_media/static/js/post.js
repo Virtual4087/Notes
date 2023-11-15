@@ -1,8 +1,11 @@
 const like_buttons = document.querySelectorAll(".like-unlike")
 const delete_buttons = document.querySelectorAll("#delete_post")
+
 like_buttons.forEach((like) =>{
     like.addEventListener("click", () => {
-        const post = like.parentElement.parentElement
+        console.log(post)
+        const post = like.parentElement.parentElement.parentElement
+        console.log(post)
         const like_count = post.querySelector("#like-count")
         fetch(`/post/${post.id}`, {
             method : "POST",

@@ -2,33 +2,21 @@
 {% load static %}
 
 {% block body %}
-    <div id={{post.id}} class="p-2 px-4 bg-blue-200 width-screen mr-4 rounded-lg" data-csrf="{{csrf_token}}">
-        <div class="flex flex-row p-2 items-align text-lg">
-            <a href="{% url 'profile' post.user.username%}" class=" ml-2 mr-4">
+    <div id={{post.id}} class="p-4 px-6 bg-blue-200 width-screen mr-8 rounded-lg" data-csrf="{{csrf_token}}">
+        <div class="flex items-align text-lg">
+            <a href="#" class="mr-4 mb-2">
                 <img
                     src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                     class="w-14 h-14 rounded-full"
                     alt="Profile"
                 />
             </a>
-            <div class="mt-2">
-                {{post.user.username}}
-            </div>
+            {{post.user.username}}
         </div>
-        <div class="text-4xl flex flex-col ml-4 mb-2">
-            <div class="">
-                {{post.title}}
-            </div>
-            <div class="flex mt-3">
-                <a href="{% url 'index'%}" class="mr-1 bg-opacity-50 mt-1 group flex items-center w-max text-sm px-4 py-1 mb-3 text-base bg-white leading-6 font-medium rounded-2xl hover:bg-blue-900 hover:text-blue-300">
-                    Category{{post.category.category}}
-                </a>
-                <a href="{% url 'index'%}" class="bg-opacity-50 mt-1 group flex items-center w-max px-4 text-sm py-1 mb-3 text-base bg-white leading-6 font-medium rounded-full hover:bg-blue-900 hover:text-blue-300">
-                    Level{{post.level.level}}
-                </a>
-            </div> 
+        <div class="text-4xl mb-2">
+            {{post.title}}
         </div>
-        <div class="whitespace-normal break-all ml-4 mb-2 mr-8">
+        <div class="whitespace-normal break-all mb-2">
             {{post.description}}
         </div>
         {% if post.image %}
@@ -39,10 +27,10 @@
             </div>
         {% endif %}
         {% if post.file %}
-            <div><a href="{{post.file.url}}" download="">download</a></div>
+        <div><a href="{{post.file.url}}" download="">download</a></div>
         {% endif %}
-        <div class="flex items-center">
-            <div class="select-none ml-4 m-2">
+        <div class="flex gap-3 p-2 pl-0 items-align">
+                <div class="select-none mx-1">
                 {% if user.is_authenticated %}
                     {% if user in post.like.all %}
                         <i class="fa-solid fa-thumbs-up cursor-pointer like-unlike" id="unlike"></i>
@@ -53,21 +41,30 @@
                     <i class="fa-regular fa-thumbs-up"></i>
                 {% endif %}
                 <span id="like-count">{{post.like.count}}</span>
-            </div>
-            {% if user == post.user %}
-                <button id="delete_post">Delete</button>
-            {% endif %}
-            {% if user.is_authenticated %}
-            <div class="ml-4">
-                {% if user in post.saved_by.all %}
-                <button type="button" id="unsave" onclick="save_post(event)">Unsave post</button>
-            {% else %}
-                <button type="button" id="save" onclick="save_post(event)">Save post</button>
-            {% endif %}
-            </div>
-        {% endif %}
+                </div>
+                {% if user == post.user %}
+                    <button class="" id="delete_post">Delete</button>
+                {% endif %}
+                
+                {% if user.is_authenticated %}
+                {% if user in post.saved_by.all %}  
+                    <button class="flex mr-1" type="button" id="unsave" onclick="save_post(event)">
+                            <svg class="h-6 w-6 select-none" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24">
+                                <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                            </svg>
+                        <span class="text-content">Unsave</span>
+                    </button>
+                {% else %}
+                    <button class="flex items-center" type="button" id="save" onclick="save_post(event)">
+                        <svg class="h-5 w-5 select-none mr-1" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                        </svg>
+                        <span class="text-content">Save</span>
+                    </button>    
+                {% endif %}
+            </div>     
+    {% endif %}
         </div>
-    </div>
     {% if user.is_authenticated %}
     <div>
         <label>Add Comment</label>
@@ -80,7 +77,7 @@
     {% if post.post_comments.all %}
         {% for comment in post.post_comments.all %}
             <h1>{{comment.user.username}}</h1>
-            <div class="whitespace-normal break-all ml-2 mb-2">
+            <div class="whitespace-normal break-all  -2 mb-2">
                 {{comment.comment}}
             </div>
             <br>
@@ -114,8 +111,9 @@
         }
 
         function save_post(event){
-            const save_button = event.target
-            const post = save_button.parentElement
+            const save_button = event.currentTarget
+            console.log(save_button)
+            const post = save_button.parentElement.parentElement
             
             fetch(`/post/${post.id}`, {
                 method : "POST",
@@ -133,16 +131,16 @@
                 console.log(data)
                 if (data.success == true){
                     if (save_button.id == "save"){
-                        save_button.innerText = "Unsave post"
+                        save_button.querySelector('span').innerText = 'Unsave'
                         save_button.id = "unsave"
                     }
                     else{
-                        save_button.innerText = "Save post"
+                        save_button.querySelector('span').innerText = 'Save'
                         save_button.id = "save"
                     }
                 }
                 else{
-                    alert("error while posting comment")
+                    alert("error while saving")
                 }
             })
         }
