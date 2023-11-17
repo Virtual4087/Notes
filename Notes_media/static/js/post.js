@@ -3,9 +3,7 @@ const delete_buttons = document.querySelectorAll("#delete_post")
 
 like_buttons.forEach((like) =>{
     like.addEventListener("click", () => {
-        console.log(post)
         const post = like.parentElement.parentElement.parentElement
-        console.log(post)
         const like_count = post.querySelector("#like-count")
         fetch(`/post/${post.id}`, {
             method : "POST",
@@ -41,7 +39,7 @@ like_buttons.forEach((like) =>{
 
 delete_buttons.forEach((button) => {
     button.addEventListener("click", () => {
-        const post = button.parentElement
+        const post = button.parentElement.parentElement
         fetch(`/post/${post.id}`, {
                 method : "DELETE",
                 headers : {
@@ -57,7 +55,7 @@ delete_buttons.forEach((button) => {
         .then(data => {
             console.log(data)
             if (data.success == true){
-                post.style.display = "none";
+                window.location.href = "/"
             }
         })
     })

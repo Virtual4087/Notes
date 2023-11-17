@@ -21,6 +21,8 @@ def search(request: HttpRequest):
             posts = Post.objects.all().order_by('-date')
         elif sortby == 'top':
             posts = Post.objects.all().order_by('-like')
+        elif sortby == 'following':
+            posts = Post.objects.filter(user__in=request.user.following.all())
     except:
         try:
             search = parameters["s"]
@@ -194,6 +196,17 @@ def profile(request, username):
         user = User.objects.get(username=username)
     except:
         user = None
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            if data.get("perform") == "follow":
+                request.user.following.add(user)
+            else:
+                request.user.following.remove(user)
+            return JsonResponse({"success" : True})
+        except:
+            return JsonResponse({"success" : False})
+
     return render(request, 'profile.html', {
         'profile': user
     })
