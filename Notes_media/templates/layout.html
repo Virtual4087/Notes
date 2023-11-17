@@ -60,16 +60,6 @@
                     </button>
                 </form>
                 <div class="flex space-x-2 items-center">
-                    <!-- Notifications -->
-                    {% if user.is_authenticated %}
-                        <a href="" class="text-amber-400 ">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bell-filled" width="36" height="36" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M14.235 19c.865 0 1.322 1.024 .745 1.668a3.992 3.992 0 0 1 -2.98 1.332a3.992 3.992 0 0 1 -2.98 -1.332c-.552 -.616 -.158 -1.579 .634 -1.661l.11 -.006h4.471z" stroke-width="0" fill="currentColor"></path>
-                                <path d="M12 2c1.358 0 2.506 .903 2.875 2.141l.046 .171l.008 .043a8.013 8.013 0 0 1 4.024 6.069l.028 .287l.019 .289v2.931l.021 .136a3 3 0 0 0 1.143 1.847l.167 .117l.162 .099c.86 .487 .56 1.766 -.377 1.864l-.116 .006h-16c-1.028 0 -1.387 -1.364 -.493 -1.87a3 3 0 0 0 1.472 -2.063l.021 -.143l.001 -2.97a8 8 0 0 1 3.821 -6.454l.248 -.146l.01 -.043a3.003 3.003 0 0 1 2.562 -2.29l.182 -.017l.176 -.004z" stroke-width="0" fill="currentColor"></path>
-                            </svg>
-                        </a>
-                    {% endif %}
                     <!-- Profile -->
                     <a
                     {% if user.is_authenticated %} 
@@ -84,7 +74,7 @@
             </div>
         </nav>
 
-        <div class="h-screen p-relative w-1/5 secondary-c pt-28 fixed z-10 hidden lg:block text-white">
+        <div class="flex flex-col justify-between h-screen p-relative w-1/5 secondary-c pt-28 fixed z-10 hidden lg:flex text-white">
             <!-- Buttons -->
             <div class="items-center flex flex-col justify-center">
                 <a href="{% url 'index'%}" class="bg-opacity-50 mt-1 group flex items-center w-3/4 px-4 py-3 mb-3 text-base bg-lime-100 leading-6 font-medium rounded-full hover:bg-green-900 hover:text-green-300">
@@ -101,21 +91,46 @@
                     Bookmarks
                 </a>
 
-                <a href="{% url 'create' %}" class="bg-opacity-75 mt-1 group flex items-center w-3/4 px-4 py-3 mb-3 text-base bg-green-500 leading-6 font-medium rounded-full hover:bg-green-900 hover:text-green-300">
-                    <svg class="mr-4 h-6 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24">
-                        <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
-                    </svg>
-                    Post
-                </a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'create' %}" class="bg-opacity-75 mt-1 group flex items-center w-3/4 px-4 py-3 mb-3 text-base bg-green-500 leading-6 font-medium rounded-full hover:bg-green-900 hover:text-green-300">
+                        <svg class="mr-4 h-6 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
+                        </svg>
+                        Post
+                    </a>
+                {% else %}
+                    <button onclick="alert('You must login to post')" class="bg-opacity-75 mt-1 group flex items-center w-3/4 px-4 py-3 mb-3 text-base bg-green-500 leading-6 font-medium rounded-full hover:bg-green-900 hover:text-green-300">
+                        <svg class="mr-4 h-6 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
+                        </svg>
+                        Post
+                    </a>
+                {% endif %}
 
-                <a href="{% url 'login' %}" class="bg-opacity-75 mt-1 group flex items-center w-3/4 px-4 py-3 mb-3 text-base bg-green-500 leading-6 font-medium rounded-full hover:bg-green-900 hover:text-green-300">
-                    <svg class="mr-4 h-6 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24">
-                        <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
+            </div>
+            <div class="mb-6">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="bg-opacity-75 mt-1 m-auto group flex items-center w-3/4 px-4 py-3 mb-3 text-base bg-green-500 leading-6 font-medium rounded-full hover:bg-green-900 hover:text-green-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M5 11m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />
+                            <path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                            <path d="M8 11v-5a4 4 0 0 1 8 0" />
+                        </svg>
+                        Logout
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="bg-opacity-75 mt-1 group m-auto flex items-center w-3/4 px-4 py-3 mb-3 text-base bg-green-700 leading-6 font-medium rounded-full hover:bg-green-400 hover:text-black">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>\
+                            <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6z" />
+                            <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
+                            <path d="M8 11v-4a4 4 0 1 1 8 0v4" ></path>
                     </svg>
-                    Login
-                </a>
+                        Login
+                    </a>
+                {% endif %}
             </div>
-            </div>
+        </div>
             {% if user.is_authenticated %}
                 <div>signed in as <b>{{user.username}}</b></div>
                 <a href="{% url 'logout' %}">Logout</a>
