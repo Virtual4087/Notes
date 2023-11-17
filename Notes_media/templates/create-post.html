@@ -2,7 +2,7 @@
 {% block body %}
 
 <div class="heading text-center font-bold text-2xl m-5 text-gray-800">New Post</div>
-  <form action="{% url 'create' %}" method="post" enctype="multipart/form-data" autocomplete="off" class="editor mx-auto w-10/12 flex flex-col text-gray-800 border border-gray-300 p-4 shadow-lg max-w-2xl">
+  <form action="{% url 'create' %}" method="post" enctype="multipart/form-data" autocomplete="off" class="editor rounded-lg mx-auto w-11/12 flex flex-col text-gray-800 border border-gray-300 p-4 shadow-lg max-w-2xl">
     {% csrf_token %}
     <input class="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none" spellcheck="false" placeholder="Title" name="title" type="text" required>
     <textarea class="description bg-gray-100 sec p-3 h-60 border border-gray-300 outline-none" spellcheck="false" name="description" placeholder="Describe everything about this post here" id="description" maxlength="2000" required></textarea>
@@ -28,10 +28,11 @@
       </label>
       <div class="count ml-auto text-gray-400 text-xs font-semibold" id="char-count">0/2000</div>
     </div>
-    <!-- buttons -->
+
+    <!-- Buttons -->
     <div class="buttons flex">
-      <div class="btn border border-gray-300 p-1 px-4 font-semibold cursor-pointer text-gray-500 ml-auto">Cancel</div>
-      <input type="submit" class="btn border border-indigo-500 p-1 px-4 font-semibold cursor-pointer text-gray-200 ml-2 bg-indigo-500">
+      <div class="btn rounded-full p-1 px-4 font-semibold cursor-pointer bg-gray-100 text-black hover:bg-gray-500 hover:text-white ml-auto">Cancel</div>
+      <input type="submit" class="btn rounded-full p-1 px-4 font-semibold cursor-pointer ml-2 bg-green-500 text-white hover:bg-green-900 hover:text-green-300">
     </div>
     
     {% if messages %}

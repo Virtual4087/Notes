@@ -6,7 +6,7 @@
         <div class="flex items-align text-lg">
             <a href="#" class="mr-4 mb-2">
                 <img
-                    src="{% if post.user.pp %}{{post.user.pp.url}}{% else %}https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png {% endif %}"
+                    src="{% if post.user.pp %}{{post.user.profile_picture.url}}{% else %}https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png {% endif %}"
                     class="w-14 h-14 rounded-full"
                     alt="Profile"
                 />
