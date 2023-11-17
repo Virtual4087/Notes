@@ -7,8 +7,11 @@ from django.contrib.auth import login, logout, authenticate
 import magic
 from django.contrib import messages
 import json
-
+from django.db.models import Q
 def index(request: HttpRequest):
+    return render(request, "index.html", {"posts": Post.objects.all()})
+
+def search(request: HttpRequest):
     parameters = request.GET
     try:
         sortby = parameters['sort']
@@ -19,7 +22,11 @@ def index(request: HttpRequest):
         elif sortby == 'top':
             posts = Post.objects.all().order_by('-like')
     except:
-        posts = Post.objects.all()    
+        try:
+            search = parameters["s"]
+            posts = Post.objects.filter(Q(title__icontains=search) | Q(description__icontains=search))
+        except:
+            return redirect("index")
     return render(request, "index.html", {"posts": posts})
 
 def register(request):
