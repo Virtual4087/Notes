@@ -52,7 +52,7 @@
                             </a>
                         </div> 
                     </div>
-                    <div class="whitespace-normal break-all mb-2">
+                    <div class="whitespace-pre-line break-words">
                         {{post.description}}
                     </div>
                 </a>
@@ -78,9 +78,6 @@
                     {% endif %}
                     <span id="like-count">{{post.like.count}}</span>
                 </div>
-                {% if user == post.user %}
-                    <button id="delete_post">Delete</button>
-                {% endif %}
                 <div class="mx-1">
                     Comments
                 </div>
