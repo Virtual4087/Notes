@@ -77,7 +77,7 @@
         <div class="flex flex-col justify-between h-screen p-relative w-1/5 secondary-c pt-28 fixed z-10 hidden lg:flex text-white">
             <!-- Buttons -->
             <div class="items-center flex flex-col justify-center">
-                <a href="{% url 'index'%}" class="bg-opacity-50 mt-1 group flex items-center w-3/4 px-4 py-3 mb-3 text-base bg-lime-100 leading-6 font-medium rounded-full hover:bg-green-900 hover:text-green-300">
+                <a href="{% url 'index'%}" class="bg-opacity-50 mt-1 group flex items-center h-full w-3/4 px-4 py-3 mb-3 text-base bg-lime-100 leading-6 font-medium rounded-full hover:bg-green-900 hover:text-green-300">
                     <svg class="mr-4 h-6 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24">
                         <path d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h3a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h3a1 1 0 001-1V10M9 21h6"></path>
                     </svg>
@@ -140,8 +140,8 @@
             {% endif %} 
         </div>
 
-        <div class="w-full lg:w-4/5 absolute right-0 pt-24 lg:px-6">
-            <div class="mt-6">
+        <div class="w-full lg:w-4/5 absolute right-0 pt-12 lg:px-6">
+            <div class="">
                 {% block body %} 
                 {% endblock %}
             </div>
