@@ -1,3 +1,45 @@
+document.querySelectorAll(".date_posted").forEach(element => {
+    const current = new Date();
+    const post_date = new Date(element.innerText);
+    let diff = (current - post_date)/1000;
+    if (diff >= 60){ 
+        diff /= 60;
+        if(diff >= 60){
+            diff /= 60;
+            if(diff >= 24){
+                diff /= 24;
+                if(diff >= 7){
+                    diff /= 7;
+                    if(diff >= 4){
+                        diff /= 4;
+                        if (diff >= 12){
+                            element.innerText = '{{opinion.date|date:"M, j"}}';
+                        }
+                        else{
+                            element.innerText = `${Math.floor(diff)}mon ago`;
+                        }
+                    }
+                    else{
+                        element.innerText = `${Math.floor(diff)}w ago`;
+                    }
+                }
+                else{
+                    element.innerText = `${Math.floor(diff)}d ago`;  
+                }
+            }
+            else{
+                element.innerText = `${Math.floor(diff)}h ago`;
+            }
+        }
+        else{
+            element.innerText = `${Math.floor(diff)}m ago`;
+        }
+    }
+    else{
+        element.innerText = `${Math.floor(diff)}s ago`;
+    }
+})
+
 const like_buttons = document.querySelectorAll(".like-unlike")
 const delete_buttons = document.querySelectorAll("#delete_post")
 

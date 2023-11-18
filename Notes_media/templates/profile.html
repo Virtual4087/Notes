@@ -6,6 +6,7 @@
             <img src="https://lh6.googleusercontent.com/Bu-pRqU_tWZV7O3rJ5nV1P6NjqFnnAs8kVLC5VGz_Kf7ws0nDUXoGTc7pP87tyUCfu8VyXi0YviIm7CxAISDr2lJSwWwXQxxz98qxVfMcKTJfLPqbcfhn-QEeOowjrlwX1LYDFJN">
         </div>
     {% else %}
+
         <div class="h-full bg-gray-200 p-8">
             <div class="bg-white rounded-lg shadow-xl pb-8">  
                 <div class="w-full h-[250px]">
@@ -66,9 +67,29 @@
                     </div>
                     <div class="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
                     <h4 class="text-xl text-gray-900 font-bold mb-4">Posts</h4>  
+
+                    <div class="flex gap-3 bg-gray-100 p-3 items-center rounded-2xl lg:mb-4">
+                        <a
+                            href="/search?sort=new"
+                            class="bg-opacity-50 group flex items-center w-max text-sm px-4 py-1 bg-gray-300 text-base leading-6 font-medium rounded-2xl hover:bg-gray-400 hover:text-black">
+                            New
+                        </a>
+                        <a
+                            href="/search?sort=top"
+                            class="bg-opacity-50 group flex items-center w-max text-sm px-4 py-1 bg-gray-300 text-base leading-6 font-medium rounded-2xl hover:bg-gray-400 hover:text-black">
+                            Top
+                        </a>
+                        <a
+                            href="/search?sort=following"
+                            class="bg-opacity-50 group flex items-center w-max text-sm px-4 py-1 bg-gray-300 text-base leading-6 font-medium rounded-2xl hover:bg-gray-400 hover:text-black">
+                            Following
+                        </a>
+                    </div>
+
                     {% for post in profile.user_posts.all %}
+
                         <div class="h-max w-full bg-white flex justify-center">
-                            <div class="border bg-white rounded-2xl p-6">
+                            <div class="border bg-white w-full rounded-2xl p-6">
                                 <div class="flex items-center	justify-between">
                                     <div class="gap-3.5	flex items-center ">
                                         <img src="https://images.unsplash.com/photo-1617077644557-64be144aa306?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" class="object-cover bg-yellow-500 rounded-full w-10 h-10" />
@@ -142,6 +163,7 @@
 
                             </div>
                         </div>
+
                     {% endfor %}
     
                         <div class="mt-4">

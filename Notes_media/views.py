@@ -9,7 +9,7 @@ from django.contrib import messages
 import json
 from django.db.models import Q
 def index(request: HttpRequest):
-    return render(request, "index.html", {"posts": Post.objects.all()})
+    return render(request, "index.html", {"posts": Post.objects.all().order_by('-date')})
 
 def search(request: HttpRequest):
     parameters = request.GET

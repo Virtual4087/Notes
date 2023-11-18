@@ -1,34 +1,33 @@
 {% extends "layout.html" %}
 {% block body %}
 
-    <div class="flex gap-3 bg-gray-100 p-3 rounded-xl lg:mb-4">
+    <div class="flex gap-3 bg-gray-100 p-3 pl-8 items-center rounded-2xl lg:mb-4">
         <a
-            href="/search?sort=following"
-            class="inline-block rounded bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]">
-            Following
+            href="/search?sort=top"
+            class="bg-opacity-50 group flex items-center w-max text-sm px-4 py-1 bg-blue-200 text-base leading-6 font-medium rounded-2xl hover:bg-blue-300 hover:text-black">
+            Top
         </a>
         <a
             href="/search?sort=new"
-            class="inline-block rounded bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]">
+            class="bg-opacity-50 group flex items-center w-max text-sm px-4 py-1 bg-blue-200 text-base leading-6 font-medium rounded-2xl hover:bg-blue-300 hover:text-black">
             New
         </a>
         <a
-            href="/search?sort=top"
-            class="inline-block rounded bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]">
-            Top
+            href="/search?sort=following"
+            class="bg-opacity-50 group flex items-center w-max text-sm px-4 py-1 bg-blue-200 text-base leading-6 font-medium rounded-2xl hover:bg-blue-300 hover:text-black">
+            Following
         </a>
-
     </div>
     <div>
         {% for post in posts %}
-        <div class="h-max w-full bg-gray-100 flex p-8">
+        <div class="h-max w-full bg-gray-100 flex p-8 pb-0">
             <div class="border bg-white w-full rounded-2xl p-6">
                 <div class="flex items-center	justify-between">
                     <div class="gap-3.5	flex items-center ">
                         <img src="https://images.unsplash.com/photo-1617077644557-64be144aa306?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" class="object-cover bg-yellow-500 rounded-full w-10 h-10" />
                         <div class="flex flex-col">
                             <b class="capitalize">{{ post.user.username }}</b>
-                            <time datetime="06-08-21" class="te xt-gray-400 text-xs">{{post.date}}</time>
+                            <time datetime="06-08-21" class="te xt-gray-400 text-xs date_posted">{{post.date|date:"Y-m-d H:i:s e"}}</time>
                         </div>
                     </div>
                 </div>
@@ -37,10 +36,10 @@
                 </a>
                 <div class="text-4xl flex flex-col mt-2">
                     <div class="flex mt-1">
-                        <a href="{% url 'index' %}" class="mr-1 bg-opacity-50 mt-1 group flex items-center w-max text-sm px-4 py-1 mb-3 text-base bg-blue-200 leading-6 font-medium rounded-2xl hover:bg-blue-900 hover:text-blue-300">
+                        <a href="{% url 'index' %}" class="mr-1 bg-opacity-50 mt-1 group flex items-center w-max text-sm px-4 py-1 mb-3 text-base bg-blue-200 leading-6 font-medium rounded-2xl hover:bg-blue-300 hover:text-black">
                             Category{{post.category.category}}
                         </a>
-                        <a href="{% url 'index' %}" class="bg-opacity-50 mt-1 group flex items-center w-max px-4 text-sm py-1 mb-3 text-base bg-blue-200 leading-6 font-medium rounded-full hover:bg-blue-900 hover:text-blue-300">
+                        <a href="{% url 'index' %}" class="bg-opacity-50 mt-1 group flex items-center w-max px-4 text-sm py-1 mb-3 text-base bg-blue-200 leading-6 font-medium rounded-full hover:bg-blue-300 hover:text-black">
                             Level{{post.level.level}}
                         </a>
                     </div> 
