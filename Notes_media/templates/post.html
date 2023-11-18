@@ -6,9 +6,11 @@
     <div class="border bg-white w-full rounded-2xl p-6">
         <div class="flex items-center">
             <div class="gap-3.5	flex items-center mb-2">
-                <img src="https://images.unsplash.com/photo-1617077644557-64be144aa306?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" class="object-cover bg-yellow-500 rounded-full w-20 h-20" />
+                <a href="{% url 'profile' post.user.username %}">
+                    <img src="https://images.unsplash.com/photo-1617077644557-64be144aa306?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" class="object-cover bg-yellow-500 rounded-full w-20 h-20 hover:brightness-50" />
+                </a>
                 <div class="flex  flex-col">
-                    <b class="capitalize text-2xl mb-1">{{ post.user.username }}</b>
+                    <a href="{% url 'profile' post.user.username %}"><b class="capitalize text-2xl mb-1 hover:underline">{{ post.user.username }}</b></a>
                     <div class="te xt-gray-400 text-xs">{{post.date|date:"M d, Y"}}</div>
                 </div>
             </div>
@@ -118,10 +120,6 @@
                 </div>
             </div>    
         {% endfor %}
-    
-    {% else %}
-        <div>None</div>
-    
     {% endif %}
 </div>
     

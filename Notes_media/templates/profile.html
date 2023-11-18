@@ -7,13 +7,18 @@
         </div>
     {% else %}
 
-        <div class="h-full bg-gray-200 p-8">
-            <div class="bg-white rounded-lg shadow-xl pb-8">  
+        <div class="h-full bg-gray-200 p-8 overflow-x-hidden">
+            <div class="bg-white rounded-lg shadow-xl pb-8 overflow-x-hidden">
+                <a> 
                 <div class="w-full h-[250px]">
                     <img src="https://vojislavd.com/ta-template-demo/assets/img/profile-background.jpg" class="w-full h-full rounded-tl-lg rounded-tr-lg">
                 </div>
+                </a> 
                 <div class="flex flex-col items-center -mt-20">
-                    <img src="https://vojislavd.com/ta-template-demo/assets/img/profile.jpg" class="w-40 border-4 border-white rounded-full">
+                <a class="border-4 border-white rounded-full relative">
+                    <img src="https://vojislavd.com/ta-template-demo/assets/img/profile.jpg" class="w-40 rounded-full object-cover">
+                    <div class="opacity-0 rounded-full bg-gray-900 text-white hover:opacity-75 h-full w-full absolute start-0 top-0 flex justify-center items-center cursor-pointer">Change Picture</div>
+                </a>
                     <div class="flex items-center mt-2">
                         <p class="text-4xl">{{ profile.username }}</p>
                     </div>
@@ -63,7 +68,7 @@
                 <div class="flex flex-col w-full 2xl:w-2/3">
                     <div class="flex-1 bg-white rounded-lg shadow-xl p-8">
                         <h4 class="text-xl text-gray-900 font-bold">About</h4>
-                        <p class="mt-2 text-gray-700">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt voluptates obcaecati numquam error et ut fugiat asperiores. Sunt nulla ad incidunt laboriosam, laudantium est unde natus cum numquam, neque facere. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut, magni odio magnam commodi sunt ipsum eum! Voluptas eveniet aperiam at maxime, iste id dicta autem odio laudantium eligendi commodi distinctio!</p>
+                        <p class="mt-2 text-gray-700">enter</p>
                     </div>
                     <div class="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
                     <h4 class="text-xl text-gray-900 font-bold mb-4">Posts</h4>  
@@ -91,11 +96,13 @@
                         <div class="h-max w-full bg-white flex justify-center">
                             <div class="border bg-white w-full rounded-2xl p-6">
                                 <div class="flex items-center	justify-between">
-                                    <div class="gap-3.5	flex items-center ">
-                                        <img src="https://images.unsplash.com/photo-1617077644557-64be144aa306?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" class="object-cover bg-yellow-500 rounded-full w-10 h-10" />
-                                        <div class="flex flex-col">
-                                            <b class="capitalize">{{ post.user.username }}</b>
-                                            <time datetime="06-08-21" class="te xt-gray-400 text-xs">{{post.date}}</time>
+                                    <div class="gap-3.5	flex items-center">
+                                        <a href="{% url 'profile' post.user.username %}">
+                                            <img src="https://images.unsplash.com/photo-1617077644557-64be144aa306?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" class="object-cover bg-yellow-500 rounded-full w-14 h-14 hover:brightness-50" />
+                                        </a>
+                                        <div class="flex  flex-col">
+                                            <a href="{% url 'profile' post.user.username %}"><b class="capitalize text-2xl mb-1 hover:underline">{{ post.user.username }}</b></a>
+                                            <div class="te xt-gray-400 text-xs date_posted">{{post.date|date:"M d, Y"}}</div>
                                         </div>
                                     </div>
                                 </div>
