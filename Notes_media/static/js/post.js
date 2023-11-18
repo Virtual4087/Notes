@@ -3,7 +3,7 @@ const delete_buttons = document.querySelectorAll("#delete_post")
 
 like_buttons.forEach((like) =>{
     like.addEventListener("click", () => {
-        const post = like.parentElement.parentElement.parentElement
+        const post = like.parentElement.parentElement
         const like_count = post.querySelector("#like-count")
         fetch(`/post/${post.id}`, {
             method : "POST",
