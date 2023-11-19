@@ -103,6 +103,7 @@ delete_buttons.forEach((button) => {
             console.log(data)
             if (data.success == true){
                 window.location.href = "/"
+                alert("Post deleted successfully!")
             }
         })
     })
