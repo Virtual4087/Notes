@@ -40,7 +40,14 @@
     
             <div class="my-4 flex flex-col 2xl:flex-row space-y-4 2xl:space-y-0 2xl:space-x-4">
                 <div class="w-full flex flex-col 2xl:w-1/3">
-                    <div class="flex-1 bg-white rounded-lg shadow-xl p-8">
+                    <div class="flex-1 bg-white rounded-lg relative shadow-xl p-8">
+                        <div class="self-end absolute right-0 top-0 m-2 p-2 rounded-full hover:bg-gray-100 cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                                <path d="M13.5 6.5l4 4" />
+                            </svg>
+                        </div>
                         <h4 class="text-xl text-gray-900 font-bold">Personal Info</h4>
                         <ul class="mt-2 text-gray-700">
                             <li class="flex border-y py-2">
@@ -66,7 +73,14 @@
                         </ul>
                     </div>
                 </div>
-                <div class="flex flex-col w-full 2xl:w-2/3">
+                <div class="flex flex-col w-full relative 2xl:w-2/3">
+                    <div class="self-end absolute right-0 top-0 m-2 p-2 rounded-full hover:bg-gray-100 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                            <path d="M13.5 6.5l4 4" />
+                        </svg>
+                    </div>
                     <div class="flex-1 bg-white rounded-lg shadow-xl p-8">
                         <h4 class="text-xl text-gray-900 font-bold">About</h4>
                         <p class="mt-2 text-gray-700">enter</p>
@@ -121,7 +135,7 @@
                                     </div> 
                                 </div>
                                 <a href="{% url 'post' post.id%}">
-                                    <div class="whitespace-pre-line break-all text-xl -mt-4 wrap">
+                                    <div class="whitespace-pre-line break-all text-xl -mt-4 wrap " id="description_view">
                                         {{post.description}}
                                     </div>
                                 </a>
