@@ -29,9 +29,12 @@
                     <div class="flex-1 flex flex-col items-center lg:items-end justify-end px-8 mt-2">
                         <div class="flex items-center space-x-4 mt-2">
                             {% if not user in profile.follower.all %}
-                                <button type="button" class="btn rounded-full p-1 px-4 font-semibold cursor-pointer ml-2 bg-green-500 text-white hover:bg-green-900 hover:text-green-300 follow_unfollow" id="follow" data-csrf="{{csrf_token}}">Follow</button>
+                                <button type="button" class="btn rounded-full p-1 px-4 font-semibold cursor-pointer ml-2 bg-green-500 border-2 border-green-500 text-white hover:bg-green-900 hover:border-green-900 hover:text-green-300 follow_unfollow" 
+                                id="follow" data-csrf="{{csrf_token}}">Follow</button>
                             {% else %}
-                                <button type="button" class="btn rounded-full p-1 px-4 font-semibold cursor-pointer ml-2 bg-green-500 text-white hover:bg-green-900 hover:text-green-300 follow_unfollow" id="unfollow" data-csrf="{{csrf_token}}">Unfollow</button>
+                                <button type="button" 
+                                class="btn rounded-full p-1 px-4 font-semibold cursor-pointer ml-2 text-black bg-white border-2 border-black hover:text-red-800 hover:border-red-800 follow_unfollow" 
+                                id="unfollow" data-csrf="{{csrf_token}}">Unfollow</button>
                             {% endif %}
                         </div>
                     </div>
@@ -110,7 +113,7 @@
 
                         <div class="h-max w-full bg-white flex justify-center" id="{{post.id}}" data-csrf="{{csrf_token}}">
                             <div class= "border bg-white w-full rounded-2xl p-6">
-                                <div class="flex items-center	justify-between">
+                                <div class="flex items-center justify-between">
                                     <div class="gap-3.5	flex items-center">
                                         <a href="{% url 'profile' post.user.username %}">
                                             <img src="https://images.unsplash.com/photo-1617077644557-64be144aa306?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" class="object-cover bg-yellow-500 rounded-full w-14 h-14 hover:brightness-50" />
@@ -135,7 +138,7 @@
                                     </div> 
                                 </div>
                                 <a href="{% url 'post' post.id%}">
-                                    <div class="whitespace-pre-line break-all text-xl -mt-4 wrap " id="description_view">
+                                    <div class="whitespace-pre-line break-all text-xl pt-6 -mt-4 wrap " id="description_view">
                                         {{post.description}}
                                     </div>
                                 </a>
@@ -217,10 +220,12 @@
                         console.log(button)
                         if (button.id == "follow"){
                             button.id = "unfollow"
-                            button.innerText = "unfollow"
+                            button.innerText = "Unfollow"
+                            button.classList.value = "btn rounded-full p-1 px-4 font-semibold cursor-pointer ml-2 text-black bg-white border-2 border-black hover:text-red-800 hover:border-red-800 follow_unfollow"
                         }else{
                             button.id = "follow"
-                            button.innerText = "follow"
+                            button.innerText = "Follow"
+                            button.classList.value = "btn rounded-full p-1 px-4 font-semibold cursor-pointer ml-2 text-white bg-green-500 border-2 border-green-500 hover:bg-green-900 hover:border-green-900 hover:text-green-300 follow_unfollow"
                         }
                     }
                 })
