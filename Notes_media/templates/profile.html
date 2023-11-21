@@ -8,25 +8,47 @@
         </div>
     {% else %}
 
-        <div class="h-full bg-gray-200 p-8">
-            <div class="bg-white rounded-lg shadow-xl pb-8">  
+        <div class="h-full bg-gray-200 p-8 overflow-x-hidden">
+            <div class="bg-white rounded-lg shadow-xl pb-8 overflow-x-hidden">
+                <a> 
                 <div class="w-full h-[250px]">
                     <img src="https://vojislavd.com/ta-template-demo/assets/img/profile-background.jpg" class="w-full h-full rounded-tl-lg rounded-tr-lg">
                 </div>
+                </a> 
                 <div class="flex flex-col items-center -mt-20">
-                    <img src="https://vojislavd.com/ta-template-demo/assets/img/profile.jpg" class="w-40 border-4 border-white rounded-full">
-                    <div class="flex items-center mt-2">
-                        <p class="text-4xl">{{ profile.username }}</p>
-                    </div>
-                    <p class="text-gray-700 ">Occupation</p>
+                <label class="border-4 border-white rounded-full relative">
+                    {% if profile.profile_picture %}
+                        <img src="{{profile.profile_picture.url}}" class="w-40 h-40 rounded-full object-cover bg-black bg-opacity-50" id="profile_picture">
+                    {% else %}
+                        <img src="/media/default_images/unknown_pp.jpg" class="w-40 h-40 rounded-full object-cover" id="profile_picture">
+                    {% endif %}
+
+                    {% if user == profile %}
+                        <div class="opacity-0 rounded-full bg-gray-900 text-white hover:opacity-75 h-full w-full absolute start-0 top-0 flex justify-center items-center cursor-pointer">Change Picture</div>
+                        <input type="file" accept="image/*" id="change_pp" class="cursor-pointer" data-csrf="{{csrf_token}}" hidden>
+                    {% endif %}
+                </label>
+
+                <div>
+                    <button type="button" id="save_pp" class="btn rounded-lg m-2 p-1 px-4 font-semibold cursor-pointer bg-green-500 text-white hover:bg-green-600" hidden>Save</button>
+                    <button type="button" id="cancel_pp" class="btn rounded-lg m-2 p-1 px-4 font-semibold cursor-pointer bg-gray-400 text-white hover:bg-gray-500" hidden>Cancel</button>
+                </div>
+                
+                <div class="flex items-center mt-2">
+                    <p class="text-4xl">{{ profile.username }}</p>
+                </div>
+                <p class="text-gray-700 ">Occupation</p>
                 </div>
                 {% if user.is_authenticated and user != profile %}
                     <div class="flex-1 flex flex-col items-center lg:items-end justify-end px-8 mt-2">
                         <div class="flex items-center space-x-4 mt-2">
                             {% if not user in profile.follower.all %}
-                                <button type="button" class="btn rounded-full p-1 px-4 font-semibold cursor-pointer ml-2 bg-green-500 text-white hover:bg-green-900 hover:text-green-300 follow_unfollow" id="follow" data-csrf="{{csrf_token}}">Follow</button>
+                                <button type="button" class="btn rounded-full p-1 px-4 font-semibold cursor-pointer ml-2 bg-green-500 border-2 border-green-500 text-white hover:bg-green-900 hover:border-green-900 hover:text-green-300 follow_unfollow" 
+                                id="follow" data-csrf="{{csrf_token}}">Follow</button>
                             {% else %}
-                                <button type="button" class="btn rounded-full p-1 px-4 font-semibold cursor-pointer ml-2 bg-green-500 text-white hover:bg-green-900 hover:text-green-300 follow_unfollow" id="unfollow" data-csrf="{{csrf_token}}">Unfollow</button>
+                                <button type="button" 
+                                class="btn rounded-full p-1 px-4 font-semibold cursor-pointer ml-2 text-black bg-white border-2 border-black hover:text-red-800 hover:border-red-800 follow_unfollow" 
+                                id="unfollow" data-csrf="{{csrf_token}}">Unfollow</button>
                             {% endif %}
                         </div>
                     </div>
@@ -35,7 +57,14 @@
     
             <div class="my-4 flex flex-col 2xl:flex-row space-y-4 2xl:space-y-0 2xl:space-x-4">
                 <div class="w-full flex flex-col 2xl:w-1/3">
-                    <div class="flex-1 bg-white rounded-lg shadow-xl p-8">
+                    <div class="flex-1 bg-white rounded-lg relative shadow-xl p-8">
+                        <div class="self-end absolute right-0 top-0 m-2 p-2 rounded-full hover:bg-gray-100 cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                                <path d="M13.5 6.5l4 4" />
+                            </svg>
+                        </div>
                         <h4 class="text-xl text-gray-900 font-bold">Personal Info</h4>
                         <ul class="mt-2 text-gray-700">
                             <li class="flex border-y py-2">
@@ -61,10 +90,17 @@
                         </ul>
                     </div>
                 </div>
-                <div class="flex flex-col w-full 2xl:w-2/3">
+                <div class="flex flex-col w-full relative 2xl:w-2/3">
+                    <div class="self-end absolute right-0 top-0 m-2 p-2 rounded-full hover:bg-gray-100 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                            <path d="M13.5 6.5l4 4" />
+                        </svg>
+                    </div>
                     <div class="flex-1 bg-white rounded-lg shadow-xl p-8">
                         <h4 class="text-xl text-gray-900 font-bold">About</h4>
-                        <p class="mt-2 text-gray-700">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt voluptates obcaecati numquam error et ut fugiat asperiores. Sunt nulla ad incidunt laboriosam, laudantium est unde natus cum numquam, neque facere. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut, magni odio magnam commodi sunt ipsum eum! Voluptas eveniet aperiam at maxime, iste id dicta autem odio laudantium eligendi commodi distinctio!</p>
+                        <p class="mt-2 text-gray-700">enter</p>
                     </div>
                     <div class="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
                     <h4 class="text-xl text-gray-900 font-bold mb-4">Posts</h4>  
@@ -91,12 +127,18 @@
 
                         <div class="h-max w-full bg-white flex justify-center" id="{{post.id}}" data-csrf="{{csrf_token}}">
                             <div class= "border bg-white w-full rounded-2xl p-6">
-                                <div class="flex items-center	justify-between">
-                                    <div class="gap-3.5	flex items-center ">
-                                        <img src="https://images.unsplash.com/photo-1617077644557-64be144aa306?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" class="object-cover bg-yellow-500 rounded-full w-10 h-10" />
-                                        <div class="flex flex-col">
-                                            <b class="capitalize">{{ post.user.username }}</b>
-                                            <time datetime="06-08-21" class="te xt-gray-400 text-xs">{{post.date}}</time>
+                                <div class="flex items-center justify-between">
+                                    <div class="gap-3.5	flex items-center">
+                                        <a href="{% url 'profile' post.user.username %}">
+                                            {% if post.user.profile_picture %}
+                                                <img src="{{post.user.profile_picture.url}}" class="object-cover border-2 border-gray-300 rounded-full w-14 h-14 hover:brightness-50" />
+                                            {% else %}
+                                                <img src="/media/default_images/unknown_pp.jpg" class="object-cover border-2 border-gray-300 rounded-full w-14 h-14 hover:brightness-50" />
+                                            {% endif %}
+                                        </a>
+                                        <div class="flex  flex-col">
+                                            <a href="{% url 'profile' post.user.username %}"><b class="capitalize text-2xl mb-1 hover:underline">{{ post.user.username }}</b></a>
+                                            <div class="te xt-gray-400 text-xs date_posted">{{post.date|date:"M d, Y"}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -114,7 +156,7 @@
                                     </div> 
                                 </div>
                                 <a href="{% url 'post' post.id%}">
-                                    <div class="whitespace-pre-line break-all text-xl -mt-4 wrap">
+                                    <div class="whitespace-pre-line break-all text-xl pt-6 -mt-4 wrap " id="description_view">
                                         {{post.description}}
                                     </div>
                                 </a>
@@ -174,6 +216,64 @@
     {% endif %}
 
     <script src="{% static 'js/post.js' %}"></script>
+    {% if user == profile %}
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const save_button = document.querySelector("#save_pp")
+                const cancel_button = document.querySelector("#cancel_pp")
+                const change_pp = document.querySelector("#change_pp")
+                const pp = document.querySelector("#profile_picture")
+
+                var previous_pp = pp.src
+
+                const formData = new FormData();
+
+                change_pp.addEventListener("change", () => {
+                    save_button.hidden = false
+                    cancel_button.hidden = false
+
+                    const filesList = change_pp.files
+                    formData.set("file", filesList[0]);
+
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        pp.src = e.target.result;
+                    };
+                    reader.readAsDataURL(filesList[0])
+                })
+
+                cancel_button.addEventListener("click", () => {
+                    pp.src = previous_pp
+                    cancel_button.hidden = true
+                    save_button.hidden = true
+                    change_pp.value = ""
+                })
+
+                save_button.addEventListener("click", () => {
+                    fetch("", {
+                        method : "POST",
+                        headers : {
+                            "Source" : "change_pp",
+                            "X-CSRFToken" : change_pp.dataset.csrf
+                        },
+                        body : formData
+                    })
+                    .then(response=>response.json())
+                    .then(data=>{
+                        if (data["success"] == true){
+                            cancel_button.hidden = true
+                            save_button.hidden = true
+                            change_pp.value = ""
+                            previous_pp = pp.src
+
+                        }else{
+                            alert("Some error occured!")
+                        }    
+                    })
+                })  
+            })
+        </script>
+    {% endif %}
     {% if user.is_authenticated and user != profile %}
         <script>
             document.querySelector(".follow_unfollow").onclick = (event) => {
@@ -196,14 +296,18 @@
                         console.log(button)
                         if (button.id == "follow"){
                             button.id = "unfollow"
-                            button.innerText = "unfollow"
+                            button.innerText = "Unfollow"
+                            button.classList.value = "btn rounded-full p-1 px-4 font-semibold cursor-pointer ml-2 text-black bg-white border-2 border-black hover:text-red-800 hover:border-red-800 follow_unfollow"
                         }else{
                             button.id = "follow"
-                            button.innerText = "follow"
+                            button.innerText = "Follow"
+                            button.classList.value = "btn rounded-full p-1 px-4 font-semibold cursor-pointer ml-2 text-white bg-green-500 border-2 border-green-500 hover:bg-green-900 hover:border-green-900 hover:text-green-300 follow_unfollow"
                         }
                     }
                 })
             }
+
+            
         </script>
     {% endif %}
 

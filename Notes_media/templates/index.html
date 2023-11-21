@@ -22,12 +22,18 @@
         {% for post in posts %}
         <div class="h-max w-full bg-gray-100 flex p-8" id="{{post.id}}" data-csrf="{{csrf_token}}">
             <div class="border bg-white w-full rounded-2xl p-6">
-                <div class="flex items-center	justify-between">
-                    <div class="gap-3.5	flex items-center ">
-                        <img src="https://images.unsplash.com/photo-1617077644557-64be144aa306?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" class="object-cover bg-yellow-500 rounded-full w-10 h-10" />
-                        <div class="flex flex-col">
-                            <b class="capitalize">{{ post.user.username }}</b>
-                            <time datetime="06-08-21" class="te xt-gray-400 text-xs date_posted">{{post.date|date:"Y-m-d H:i:s e"}}</time>
+                <div class="flex items-center justify-between">
+                    <div class="gap-3.5	flex items-center mb-2">
+                        <a href="{% url 'profile' post.user.username %}">
+                            {% if post.user.profile_picture %}
+                                <img src="{{post.user.profile_picture.url }}" class="rounded-full w-16 h-16 object-cover border-2 border-gray-300">
+                            {% else %}
+                                <img src="media/default_images/unknown_pp.jpg" class="rounded-full w-16 h-16 object-cover border-2 border-gray-300">
+                            {% endif %}
+                        </a>
+                        <div class="flex  flex-col">
+                            <a href="{% url 'profile' post.user.username %}"><b class="capitalize text-2xl mb-1 hover:underline">{{ post.user.username }}</b></a>
+                            <div class="te xt-gray-400 text-xs date_posted">{{post.date|date:"M d, Y"}}</div>
                         </div>
                     </div>
                 </div>
@@ -45,7 +51,7 @@
                     </div> 
                 </div>
                 <a href="{% url 'post' post.id%}">
-                    <div class="whitespace-pre-line break-all text-xl -mt-4 wrap" id="description_view">
+                    <div class="whitespace-pre-line break-all pt-6 text-xl -mt-4 wrap" id="description_view">
                         {{post.description}}
                     </div>
                 </a>
@@ -114,7 +120,7 @@
                 var count = countOccurrences(desc.innerText, "\n")
                 if (count > 7){
                     var lines = desc.innerText.split("\n");
-                    desc.innerHTML = lines.slice(0, 7).join("\n") + "<span class='text-gray-500 ml-2 hover:underline'>Read more...</span>";
+                    desc.innerHTML = lines.slice(0, 7).join("\n") + "<span class='text-gray-500 text-lg ml-2 hover:underline'>read more...</span>";
                 }
             })
         })

@@ -1,5 +1,18 @@
 
 document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('#description_view').forEach(element=>{
+
+        var htmlContent = marked.parse(element.innerText);
+        htmlContent = htmlContent.replace(/<h1/g, '<h1 class="text-5xl font-bold"');
+        htmlContent = htmlContent.replace(/<h2/g, '<h2 class="text-4xl font-bold "');
+        htmlContent = htmlContent.replace(/<h3/g, '<h3 class="text-3xl font-bold"');
+        htmlContent = htmlContent.replace(/<h4/g, '<h4 class="text-2xl font-bold"');
+        htmlContent = htmlContent.replace(/<h5/g, '<h5 class="text-xl font-bold"');
+        htmlContent = htmlContent.replace(/<h6/g, '<h6 class="text-lg font-bold"');
+
+        element.innerHTML = htmlContent
+
+    })
     document.querySelectorAll(".date_posted").forEach(element => {
         const current = new Date();
         const post_date = new Date(element.innerText);

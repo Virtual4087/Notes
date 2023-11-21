@@ -7,9 +7,15 @@
         <button id="delete_post">Delete</button>
         <div class="flex items-center">
             <div class="gap-3.5	flex items-center mb-2">
-                <img src="https://images.unsplash.com/photo-1617077644557-64be144aa306?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" class="object-cover bg-yellow-500 rounded-full w-20 h-20" />
+                <a href="{% url 'profile' post.user.username %}">
+                    {% if post.user.profile_picture %}
+                        <img src="{{post.user.profile_picture.url }}" class="object-cover border-2 border-gray-300 rounded-full w-20 h-20 hover:brightness-50">
+                    {% else %}
+                        <img src="/media/default_images/unknown_pp.jpg" class="object-cover border-2 border-gray-300 rounded-full w-20 h-20 hover:brightness-50" />
+                    {% endif %}
+                </a>
                 <div class="flex  flex-col">
-                    <b class="capitalize text-2xl mb-1">{{ post.user.username }}</b>
+                    <a href="{% url 'profile' post.user.username %}"><b class="capitalize text-2xl mb-1 hover:underline">{{ post.user.username }}</b></a>
                     <div class="te xt-gray-400 text-xs">{{post.date|date:"M d, Y"}}</div>
                 </div>
             </div>
@@ -28,7 +34,7 @@
             </div> 
         </div>
         <a href="{% url 'post' post.id%}">
-        <div class="whitespace-pre-line break-all text-xl -mt-4 wrap">
+        <div class="whitespace-pre-line break-all text-xl pt-6 -mt-4 wrap" id="description_view">
             {{post.description}}
         </div>
         </a>
@@ -82,7 +88,11 @@
 
         <div class="bg-white px-4 py-2 rounded-2xl my-2">
             <div class="flex justify-center items-center my-2">
-                <img src="https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"  class="bg-yellow-500 rounded-full w-16 h-16 object-cover border border-gray-300 border-2">
+                {% if user.profile_picture %}
+                    <img src="{{user.profile_picture.url }}" class="rounded-full w-16 h-16 object-cover border-2 border-gray-300">
+                {% else %}
+                    <img src="/media/default_images/unknown_pp.jpg" class="rounded-full w-16 h-16 object-cover border-2 border-gray-300">
+                {% endif %}
                 <div class="flex flex-col ml-2 justify-between h-max w-11/12 rounded-2xl overflow-hidden">
                     <textarea id="post_comment" class="resize-none ml-4 h-full py-2 w-full outline-none" placeholder="Write your comment..." name="comment" required>{{comment.comment}}</textarea>
                 </div>
@@ -102,25 +112,27 @@
         </div>
     {% endif %}
 
-    {% if post.post_comments.all %}
-        {% for comment in post.post_comments.all %}   
-            <div class="bg-white px-4 py-2 rounded-2xl my-4">
-                <div class="flex justify-center items-center my-2">
-                    <a href="{% url 'profile' comment.user.username %}" class="border rounded-full border-gray-300 border-2">
-                    <img src="https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"  class="bg-yellow-500 rounded-full w-16 h-16 object-cover hover:brightness-50">
-                    </a>
-                    <div class="flex flex-col ml-2 justify-between h-max w-11/12 rounded-2xl overflow-hidden">
-                        <a href="{% url 'profile' comment.user.username %}" class="font-bold text-xl m-2 mb-0 ml-4 hover:underline">{{comment.user.username}}</a>
-                        <h1 class="resize-none ml-2 h-full p-2 pt-0 w-full outline-none">{{comment.comment}}</h1>
+    <div id="comment_section">
+        {% if post.post_comments.all %}
+            {% for comment in post.post_comments.all %}   
+                <div class="bg-white px-4 py-2 rounded-2xl my-4">
+                    <div class="flex justify-center items-center my-2">
+                        <a href="{% url 'profile' comment.user.username %}">
+                        {% if comment.user.profile_picture %}
+                            <img src="{{comment.user.profile_picture.url }}" class="rounded-full w-16 h-16 object-cover border-2 border-gray-300">
+                        {% else %}
+                            <img src="/media/default_images/unknown_pp.jpg" class="rounded-full w-16 h-16 object-cover border-2 border-gray-300">
+                        {% endif %}
+                        </a>
+                        <div class="flex flex-col ml-2 justify-between h-max w-11/12 rounded-2xl overflow-hidden">
+                            <a href="{% url 'profile' comment.user.username %}" class="font-bold text-xl m-2 mb-0 ml-4 hover:underline">{{comment.user.username}}</a>
+                            <h1 class="resize-none ml-2 h-full p-2 pt-0 w-full outline-none whitespace-pre-line break-all">{{comment.comment}}</h1>
+                        </div>
                     </div>
-                </div>
-            </div>    
-        {% endfor %}
-    
-    {% else %}
-        <div>None</div>
-    
-    {% endif %}
+                </div>    
+            {% endfor %}
+        {% endif %}
+    </div>
 </div>
     
     
@@ -129,6 +141,13 @@
     <script>
         function post_comment(id, csrf){
             const comment = document.querySelector("#post_comment")
+            const comment_section = document.querySelector("#comment_section")
+            comment.value = comment.value.trim()
+            if (comment.value == ""){
+                alert("You cannot leave this empty!")
+                return
+            }
+
             fetch(`/post/${id}`, {
                 method : "POST",
                 headers : {
@@ -142,6 +161,22 @@
             .then(data => {
                 console.log(data)
                 if (data.success == true){
+                    var html = `<div class="bg-white px-4 py-2 rounded-2xl my-4">
+                    <div class="flex justify-center items-center my-2">
+                        <a href="{% url 'profile' user.username %}">
+                        {% if user.profile_picture %}
+                            <img src="{{user.profile_picture.url }}" class="rounded-full w-16 h-16 object-cover border-2 border-gray-300">
+                        {% else %}
+                            <img src="/media/default_images/unknown_pp.jpg" class="rounded-full w-16 h-16 object-cover border-2 border-gray-300">
+                        {% endif %}
+                        </a>
+                        <div class="flex flex-col ml-2 justify-between h-max w-11/12 rounded-2xl overflow-hidden">
+                            <a href="{% url 'profile' user.username %}" class="font-bold text-xl m-2 mb-0 ml-4 hover:underline">{{user.username}}</a>
+                            <h1 class="resize-none ml-2 h-full p-2 pt-0 w-full whitespace-pre-line break-all">${comment.value}</h1>
+                        </div>
+                    </div>
+                </div>`
+                    comment_section.innerHTML = html + comment_section.innerHTML
                     comment.value = ""
                 }
                 else{

@@ -141,8 +141,8 @@ def post(request, post_id):
 def createpost(request):
     if request.user.is_authenticated:
         if request.method == "POST":
-            title = request.POST["title"]
-            description = request.POST["description"]
+            title = request.POST["title"].strip()
+            description = request.POST["description"].strip()
 
             try:
                 post = Post.objects.create(
@@ -197,15 +197,37 @@ def profile(request, username):
     except:
         user = None
     if request.method == "POST":
-        try:
-            data = json.loads(request.body.decode('utf-8'))
-            if data.get("perform") == "follow":
-                request.user.following.add(user)
-            else:
-                request.user.following.remove(user)
-            return JsonResponse({"success" : True})
-        except:
-            return JsonResponse({"success" : False})
+        source = request.headers.get("Source")
+
+        if source == "follow_unfollow":
+            try:
+                data = json.loads(request.body.decode('utf-8'))
+                if data.get("perform") == "follow":
+                    request.user.following.add(user)
+                else:
+                    request.user.following.remove(user)
+                return JsonResponse({"success" : True})
+            except:
+                return JsonResponse({"success" : False})
+        
+        elif source == "change_pp":
+            try:
+                image = request.FILES.get('file')
+                mime = magic.Magic()
+                file_type = mime.from_buffer(image.read())
+                if not "image" in file_type:
+                    return JsonResponse({"success" : False})
+                
+                if request.user.profile_picture:
+                    previous_image = request.user.profile_picture
+                    previous_image.delete()
+
+                request.user.profile_picture = image
+                request.user.save()
+
+                return JsonResponse({"success" : True})
+            except Exception as e:
+                return JsonResponse({"success" : str(e)})
 
     return render(request, 'profile.html', {
         'profile': user
