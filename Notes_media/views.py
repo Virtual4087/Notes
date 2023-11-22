@@ -7,9 +7,11 @@ from django.contrib.auth import login, logout, authenticate
 import magic
 from django.contrib import messages
 import json
-from django.db.models import Q
+from django.db.models import Q, Count
+
 def index(request: HttpRequest):
     return render(request, "index.html", {"posts": Post.objects.all().order_by('-date')})
+
 
 def search(request: HttpRequest):
     parameters = request.GET
@@ -20,16 +22,17 @@ def search(request: HttpRequest):
         elif sortby == 'new':
             posts = Post.objects.all().order_by('-date')
         elif sortby == 'top':
-            posts = Post.objects.all().order_by('-like')
+            posts = Post.objects.annotate(num_likes = Count("like")).order_by('-num_likes')
         elif sortby == 'following':
             posts = Post.objects.filter(user__in=request.user.following.all())
     except:
         try:
             search = parameters["s"]
-            posts = Post.objects.filter(Q(title__icontains=search) | Q(description__icontains=search))
+            posts = Post.objects.filter(Q(title__icontains=search) | Q(description__icontains=search)).order_by("-date")
         except:
             return redirect("index")
     return render(request, "index.html", {"posts": posts})
+
 
 def register(request):
     if request.method == "POST":
@@ -84,6 +87,7 @@ def logout_view(request):
     logout(request)
     return redirect("index")
 
+
 def post(request, post_id):
     post = Post.objects.get(id=post_id)
 
@@ -137,7 +141,8 @@ def post(request, post_id):
                 return JsonResponse({"success" : False})
         except:
             return JsonResponse({"success" : False})
-        
+
+
 def createpost(request):
     if request.user.is_authenticated:
         if request.method == "POST":
@@ -191,11 +196,13 @@ def createpost(request):
     else:
         return redirect('index')
     
+
 def profile(request, username):
     try:
         user = User.objects.get(username=username)
     except:
         user = None
+
     if request.method == "POST":
         source = request.headers.get("Source")
 
@@ -218,12 +225,16 @@ def profile(request, username):
                 if not "image" in file_type:
                     return JsonResponse({"success" : False})
                 
-                if request.user.profile_picture:
-                    previous_image = request.user.profile_picture
-                    previous_image.delete()
+                previous_image = request.user.profile_picture
 
                 request.user.profile_picture = image
                 request.user.save()
+
+                if previous_image and "default_images/" not in previous_image.url:
+                    try:
+                        previous_image.delete()
+                    except:
+                        pass
 
                 return JsonResponse({"success" : True})
             except Exception as e:

@@ -62,16 +62,12 @@
                 </form>
                 <div class="flex space-x-2 items-center">
                     <!-- Profile -->
-                    {% if user.is_authenticated and user.profile_picture %} 
+                    {% if user.is_authenticated %} 
                         <a href="{% url 'profile' user.username %}" class="text-white"> 
                             <img src="{{user.profile_picture.url}}" class="w-10 border-2 border-gray-300 rounded-full">
                         </a>
                     {% else %}
-                        {% if user.is_authenticated %}
-                            <a href="{% url 'profile' user.username %}" class="text-white">
-                        {% else %}
-                            <a href="{% url 'login' %}" class="text-white">
-                        {% endif %}
+                        <a href="{% url 'login' %}" class="text-white">
                             <img src="/media/default_images/unknown_pp.jpg" class="w-10 border-2 border-gray-300 rounded-full">
                         </a>
                     {% endif %}
@@ -136,20 +132,10 @@
                 {% endif %}
             </div>
         </div>
-            {% if user.is_authenticated %}
-                <div>signed in as <b>{{user.username}}</b></div>
-                <a href="{% url 'logout' %}">Logout</a>
-            {% else %}
-                <div>Not signed in</div>
-                <a href="{% url 'login' %}">Login</a>
-            {% endif %} 
-        </div>
 
-        <div class="w-full lg:w-4/5 absolute right-0 pt-12 lg:px-6">
-            <div class="">
-                {% block body %} 
-                {% endblock %}
-            </div>
+        <div class="w-full h-full lg:w-4/5 absolute right-0 pt-24 lg:px-6">
+            {% block body %} 
+            {% endblock %}
         </div>
     </body>
 </html>
