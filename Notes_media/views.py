@@ -218,6 +218,8 @@ def profile(request, username):
                 return JsonResponse({"success" : False})
         
         elif source == "change_pp":
+            if request.user != user:
+                return JsonResponse({"success" : False})
             try:
                 image = request.FILES.get('file')
                 mime = magic.Magic()
@@ -239,6 +241,21 @@ def profile(request, username):
                 return JsonResponse({"success" : True})
             except Exception as e:
                 return JsonResponse({"success" : str(e)})
+    
+    elif request.method == "PUT":
+        source = request.headers.get("Source")
+        if source == "edit_about":
+            if request.user != user:
+                return JsonResponse({"success" : False})
+            
+            data = request.body.decode('utf-8')
+
+            try:
+                user.about = data
+                user.save()
+                return JsonResponse({"success" : True})
+            except:
+                return JsonResponse({"success" : False})
 
     return render(request, 'profile.html', {
         'profile': user

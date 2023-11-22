@@ -32,7 +32,7 @@
                 <div class="flex items-center mt-2">
                     <p class="text-4xl">{{ profile.username }}</p>
                 </div>
-                <p class="text-gray-700 ">Occupation</p>
+                <p class="text-gray-700">Occupation</p>
                 </div>
                 {% if user.is_authenticated and user != profile %}
                     <div class="flex-1 flex flex-col items-center lg:items-end justify-end px-8 mt-2">
@@ -86,7 +86,6 @@
                     </div>
                 </div>
                 <div class="flex flex-col w-full relative 2xl:w-2/3">
-                    
                     <div class="flex-1 bg-white rounded-lg shadow-xl p-8">
                         {% if user == profile %}
                             <div class="self-end absolute right-0 top-0 m-2 p-2 rounded-full hover:bg-gray-100 cursor-pointer" id="edit_about">
@@ -98,7 +97,12 @@
                             </div>
                         {% endif %}
                         <h4 class="text-xl text-gray-900 font-bold">About</h4>
-                        <p contenteditable="false" class="mt-2 text-gray-700" id="about">enter</p>
+                        <p contenteditable="false" class="mt-2 text-gray-700 outline-none" id="about">{{profile.about}}</p>
+                        <div class="count w-max ml-auto text-gray-400 text-xs font-semibold" id="char-count" hidden>0/200</div>
+                        <div class="ml-auto w-max flex gap-2 mt-2">
+                            <button type="button" id="save_about" class="btn rounded-lg p-1 px-4 font-semibold cursor-pointer bg-green-500 text-white hover:bg-green-600" hidden>Save</button>
+                            <button type="button" id="cancel_about" class="btn rounded-lg p-1 px-4 font-semibold cursor-pointer bg-gray-400 text-white hover:bg-gray-500" hidden>Cancel</button>
+                        </div>
                     </div>
                     <div class="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
                     <h4 class="text-xl text-gray-900 font-bold mb-4">Posts</h4>  
@@ -132,7 +136,7 @@
                                         </a>
                                         <div class="flex  flex-col">
                                             <a href="{% url 'profile' post.user.username %}"><b class="capitalize text-2xl mb-1 hover:underline">{{ post.user.username }}</b></a>
-                                            <div class="te xt-gray-400 text-xs date_posted">{{post.date|date:"M d, Y"}}</div>
+                                            <div class="te xt-gray-400 text-xs date_posted">{{post.date|date:"Y-m-d H:i:s e"}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -264,10 +268,64 @@
 
                 const about = document.querySelector("#about")
                 const edit_about = document.querySelector("#edit_about")
+                const save_about = document.querySelector("#save_about")
+                const cancel_about = document.querySelector("#cancel_about")
+                const char_count = document.querySelector("#char-count")
+                var about_text = about.innerText
 
-                edit_about.onclick = () =>{
+                edit_about.onclick = () => {
+                    save_about.hidden = false
+                    cancel_about.hidden = false
+                    char_count.hidden = false
+                    char_count.innerText = `${about.innerText.length}/200`
+
+                    // Make about section editable
                     about.contentEditable = true
-                    about.focus()
+
+                    about.focus();       
+                }
+
+                about.addEventListener("input", () => {
+
+                    if (about.innerText.length > 200) {
+                        about.innerText = about.innerText.slice(0, 200);
+                    }
+                    char_count.innerText = `${about.innerText.length}/200`
+                    
+                })
+
+                save_about.onclick = () => {
+                    fetch("", {
+                        method : "PUT",
+                        headers : {
+                            "Source" : "edit_about",
+                            "Content-Type" : "application/json",
+                            "X-CSRFToken" : change_pp.dataset.csrf
+                        },
+                        body : about.innerText
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data)
+                        if (data.success == true){
+                            about.contentEditable = false
+                            save_about.hidden = true
+                            cancel_about.hidden = true
+                            char_count.hidden = true
+                            about_text = about.innerText
+                        }
+                        else{
+                            alert("An error occured!")
+                        }
+                    })
+                }
+
+                cancel_about.onclick = () => {
+                    about.innerText = about_text
+                    about.contentEditable = false
+                    save_about.hidden = true
+                    cancel_about.hidden = true
+                    char_count.hidden = true
                 }
             })
         </script>

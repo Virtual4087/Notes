@@ -29,7 +29,7 @@
                         </a>
                         <div class="flex  flex-col">
                             <a href="{% url 'profile' post.user.username %}"><b class="capitalize text-2xl mb-1 hover:underline">{{ post.user.username }}</b></a>
-                            <div class="te xt-gray-400 text-xs date_posted">{{post.date|date:"M d, Y"}}</div>
+                            <div class="te xt-gray-400 text-xs date_posted">{{post.date|date:"Y-m-d H:i:s e"}}</div>
                         </div>
                     </div>
                 </div>
