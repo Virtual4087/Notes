@@ -4,25 +4,35 @@
 {% block body %}
 <div class="h-max w-full bg-gray-100 flex p-8" id="{{post.id}}" data-csrf="{{csrf_token}}">
     <div class="border bg-white w-full rounded-2xl p-6">
-        <button id="delete_post">Delete</button>
         <div class="flex items-center">
-            <div class="gap-3.5	flex items-center mb-2">
-                <a href="{% url 'profile' post.user.username %}">
-                    {% if post.user.profile_picture %}
-                        <img src="{{post.user.profile_picture.url }}" class="object-cover border-2 border-gray-300 rounded-full w-20 h-20 hover:brightness-50">
-                    {% else %}
-                        <img src="/media/default_images/unknown_pp.jpg" class="object-cover border-2 border-gray-300 rounded-full w-20 h-20 hover:brightness-50" />
-                    {% endif %}
-                </a>
-                <div class="flex  flex-col">
-                    <a href="{% url 'profile' post.user.username %}"><b class="capitalize text-2xl mb-1 hover:underline">{{ post.user.username }}</b></a>
-                    <div class="te xt-gray-400 text-xs">{{post.date|date:"M d, Y"}}</div>
+            <div class="flex items-center mb-2 justify-between w-full">
+                <div class="flex gap-3.5 items-center">
+                    <a href="{% url 'profile' post.user.username %}">
+                        {% if post.user.profile_picture %}
+                            <img src="{{post.user.profile_picture.url }}" class="object-cover border-2 border-gray-300 rounded-full w-20 h-20 hover:brightness-50">
+                        {% else %}
+                            <img src="/media/default_images/unknown_pp.jpg" class="object-cover border-2 border-gray-300 rounded-full w-20 h-20 hover:brightness-50" />
+                        {% endif %}
+                    </a>
+                    <div class="flex  flex-col">
+                        <a href="{% url 'profile' post.user.username %}"><b class="capitalize text-2xl mb-1 hover:underline">{{ post.user.username }}</b></a>
+                        <div class="te xt-gray-400 text-xs">{{post.date|date:"M d, Y"}}</div>
+                    </div>
                 </div>
+                {% if user == post.user %}
+                    <button id="delete_post" class="w-max text-right self-start">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M4 7l16 0" />
+                            <path d="M10 11l0 6" />
+                            <path d="M14 11l0 6" />
+                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                    </button>
+                {% endif %}
             </div>
         </div>
-        <a href="{% url 'post' post.id%}">
-        <div class="whitespace-pre-wrap break-all text-4xl mt-5">{{post.title}}</div>
-        </a>
+        <div class="whitespace-pre-wrap break-all font-bold text-4xl mt-5">{{post.title}}</div>
         <div class="text-4xl flex flex-col mt-2">
             <div class="flex mt-1">
                 <a href="{% url 'index' %}" class="mr-1 bg-opacity-50 mt-1 group flex items-center w-max text-sm px-4 py-1 mb-3 text-base bg-blue-200 leading-6 font-medium rounded-2xl hover:bg-blue-900 hover:text-blue-300">
@@ -33,11 +43,9 @@
                 </a>
             </div> 
         </div>
-        <a href="{% url 'post' post.id%}">
         <div class="whitespace-pre-line break-all text-xl pt-6 -mt-4 wrap" id="description_view">
             {{post.description}}
         </div>
-        </a>
         {% if post.image %}
             <div class="mt-5 flex gap-2	justify-center border-b pb-4 flex-wrap">
                 {% for image in post.image.all %}

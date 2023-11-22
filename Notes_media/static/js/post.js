@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('#description_view').forEach(element=>{
 
         var htmlContent = marked.parse(element.innerText);
-        htmlContent = htmlContent.replace(/<h1/g, '<h1 class="text-5xl font-bold"');
+        htmlContent = htmlContent.replace(/<h1/g, '<h1 class="text-5xl font-semibold"');
         htmlContent = htmlContent.replace(/<h2/g, '<h2 class="text-4xl font-bold "');
         htmlContent = htmlContent.replace(/<h3/g, '<h3 class="text-3xl font-bold"');
         htmlContent = htmlContent.replace(/<h4/g, '<h4 class="text-2xl font-bold"');
@@ -13,7 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
         element.innerHTML = htmlContent
 
     })
+
     document.querySelectorAll(".date_posted").forEach(element => {
+        console.log(element.innerText)
         const current = new Date();
         const post_date = new Date(element.innerText);
         let diff = (current - post_date)/1000;
@@ -99,7 +101,7 @@ like_buttons.forEach((like_button) =>{
 
 delete_buttons.forEach((button) => {
     button.addEventListener("click", () => {
-        const post = button.parentElement.parentElement
+        const post = button.parentElement.parentElement.parentElement.parentElement
         fetch(`/post/${post.id}`, {
                 method : "DELETE",
                 headers : {
