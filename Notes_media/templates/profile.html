@@ -77,16 +77,16 @@
                     </div>
                 </div>
                 <div class="flex flex-col w-full relative 2xl:w-2/3">
-                    <div class="self-end absolute right-0 top-0 m-2 p-2 rounded-full hover:bg-gray-100 cursor-pointer">
+                    <button id="edit_button" type="button" class="self-end absolute right-0 top-0 m-2 p-2 rounded-full hover:bg-gray-100 cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                             <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
                             <path d="M13.5 6.5l4 4" />
                         </svg>
-                    </div>
+                    </button>
                     <div class="flex-1 bg-white rounded-lg shadow-xl p-8">
                         <h4 class="text-xl text-gray-900 font-bold">About</h4>
-                        <p class="mt-2 text-gray-700">enter</p>
+                        <p class="mt-2 text-gray-700" id="about-text">Enter</p>
                     </div>
                     <div class="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
                     <h4 class="text-xl text-gray-900 font-bold mb-4">Posts</h4>  
@@ -125,7 +125,7 @@
                                     </div>
                                 </div>
                                 <a href="{% url 'post' post.id%}">
-                                    <div class="whitespace-pre-wrap text-4xl mt-5">{{post.title}}</div>
+                                    <div class="whitespace-pre-wrap break-all text-4xl mt-5">{{post.title}}</div>
                                 </a>
                                 <div class="text-4xl flex flex-col mt-2">
                                     <div class="flex mt-1">
@@ -230,6 +230,15 @@
                     }
                 })
             }
+            
+
+            document.querySelector('#edit_button').addEventListener('click', (event)=>{
+                console.log('adsad')
+                edit_button = event.target;
+                const aboutsection = document.querySelector('about-text');
+                aboutsection.contentEditable = true;
+                aboutsection.style.backgroundColor = "#000000";
+            })
         </script>
     {% endif %}
 

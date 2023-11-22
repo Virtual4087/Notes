@@ -2,8 +2,9 @@
 {% load static %}
 
 {% block body %}
-<div class="h-max w-full bg-gray-100 flex p-4" id="{{post.id}}" data-csrf="{{csrf_token}}">
+<div class="h-max w-full bg-gray-100 flex p-8" id="{{post.id}}" data-csrf="{{csrf_token}}">
     <div class="border bg-white w-full rounded-2xl p-6">
+        <button id="delete_post">Delete</button>
         <div class="flex items-center">
             <div class="gap-3.5	flex items-center mb-2">
                 <a href="{% url 'profile' post.user.username %}">
@@ -16,7 +17,7 @@
             </div>
         </div>
         <a href="{% url 'post' post.id%}">
-        <div class="whitespace-pre-wrap text-4xl mt-5">{{post.title}}</div>
+        <div class="whitespace-pre-wrap break-all text-4xl mt-5">{{post.title}}</div>
         </a>
         <div class="text-4xl flex flex-col mt-2">
             <div class="flex mt-1">
