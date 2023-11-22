@@ -52,11 +52,13 @@
                     </div>
                 </a>
                 {% if post.image %}
-                    <a href="{% url 'post' post.id %}" class="mt-5 flex gap-2	justify-center border-b pb-4 flex-wrap relative">
+                    <a href="{% url 'post' post.id %}" class="mt-5 flex gap-2 justify-center border-b pb-4 flex-wrap relative">
                         {% for image in post.image.all|slice:":2" %}    
                             <img src="{{image.image.url}}" class="bg-red-500 rounded-2xl w-1/3 h-80 object-cover flex-auto">
                             {% if forloop.last %} 
-                                <div class="absolute text-white w-1/2 right-0 bg-black bg-opacity-60 h-full flex justify-center items-center text-4xl">+{{ post.image.count|add:"-2" }}</div> 
+                            <div class="absolute w-1/2 h-full pb-4 right-0 pl-1">
+                                <div class="rounded-2xl h-full text-white bg-black bg-opacity-60 flex justify-center items-center text-4xl">+{{ post.image.count|add:"-2" }}</div> 
+                            </div>
                             {% endif %}
                             
                         {% endfor %}

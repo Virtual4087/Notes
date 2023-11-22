@@ -30,7 +30,9 @@ class User(AbstractUser):
     )
     saved_post = models.ManyToManyField("Post", blank=True, related_name="saved_by")
 
-    profile_picture = models.FileField(blank=False, upload_to="profile_pictures", default="default_images/unknown_pp.jpg")
+    profile_picture = models.FileField(blank=False, null=False, upload_to="profile_pictures", default="default_images/unknown_pp.jpg")
+
+    about = models.CharField(blank=True, max_length=200)
 
     def __str__(self):
         return self.username
