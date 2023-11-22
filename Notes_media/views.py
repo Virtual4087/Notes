@@ -227,14 +227,16 @@ def profile(request, username):
                 
                 previous_image = request.user.profile_picture
 
-                request.user.profile_picture = image
-                request.user.save()
-    
                 if previous_image and "default_images/" not in previous_image.url:
                     try:
                         previous_image.delete()
                     except:
                         pass
+                
+                request.user.profile_picture = image
+                request.user.save()
+    
+                
 
                 return JsonResponse({"success" : True})
             except Exception as e:
