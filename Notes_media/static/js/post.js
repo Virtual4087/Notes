@@ -14,6 +14,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     })
 
+    const sub = document.querySelector('#Subject')
+    const edu = document.querySelector('#eduLevel')
+    const Science = ['Physics', 'Biology', 'Chemistry']
+    const Finance = ['Economics', 'Accounts']
+    const SocialScience = ['Social', 'History']
+
+
+    if (Science.includes(sub.innerText)){
+        sub.classList.replace("bg-gray-300", "bg-lime-300")
+        sub.classList.replace("hover:bg-gray-600", "hover:bg-lime-600")
+    }
+    else if (sub.innerText == 'Math'){  
+        sub.classList.replace("bg-gray-300", "bg-blue-300")
+        sub.classList.replace("hover:bg-gray-600", "hover:bg-blue-800")
+    }
+    else if (Finance.includes(sub.innerText)){
+        sub.classList.replace("bg-gray-300", "bg-yellow-400")
+        sub.classList.replace("hover:bg-gray-600", "hover:bg-amber-400")
+    }
+    else if (SocialScience.includes(sub.innerText)){
+        sub.classList.replace("bg-gray-300", "brown-light")
+        sub.classList.replace("hover:bg-gray-600", "brown-dark")
+    }
+
     document.querySelectorAll(".date_posted").forEach(element => {
         console.log(element.innerText)
         const current = new Date();

@@ -35,11 +35,11 @@
         <div class="whitespace-pre-wrap break-all font-bold text-4xl mt-5">{{post.title}}</div>
         <div class="text-4xl flex flex-col mt-2">
             <div class="flex mt-1">
-                <a href="{% url 'index' %}" class="mr-1 bg-opacity-50 mt-1 group flex items-center w-max text-sm px-4 py-1 mb-3 text-base bg-blue-200 leading-6 font-medium rounded-2xl hover:bg-blue-900 hover:text-blue-300">
-                    Category{{post.category.category}}
+                <a href="{% url 'index' %}" id="Subject" class="mr-1 bg-opacity-50 mt-1 group flex items-center w-max text-sm px-4 py-1 mb-3 text-black bg-gray-300 leading-6 font-medium rounded-2xl hover:bg-gray-600 hover:text-white">
+                    {{post.category.category}}
                 </a>
-                <a href="{% url 'index' %}" class="bg-opacity-50 mt-1 group flex items-center w-max px-4 text-sm py-1 mb-3 text-base bg-blue-200 leading-6 font-medium rounded-full hover:bg-blue-900 hover:text-blue-300">
-                    Level{{post.level.level}}
+                <a href="{% url 'index' %}" id="eduLevel" class="bg-opacity-50 mt-1 group flex items-center w-max px-4 text-sm py-1 mb-3 text-black bg-gray-300 leading-6 font-medium rounded-full hover:bg-gray-600 hover:text-white">
+                    {{post.level.level}}
                 </a>
             </div> 
         </div>
@@ -142,50 +142,50 @@
     
 
     <script src="{% static 'js/post.js' %}"></script>
-    <script>
-    "{% if user.is_authenticated %}"
-        function post_comment(id, csrf){
-            const comment = document.querySelector("#post_comment")
-            const comment_section = document.querySelector("#comment_section")
-            comment.value = comment.value.trim()
-            if (comment.value == ""){
-                alert("You cannot leave this empty!")
-                return
-            }
+    {% if user.is_authenticated %}
+        <script>
+            function post_comment(id, csrf){
+                const comment = document.querySelector("#post_comment")
+                const comment_section = document.querySelector("#comment_section")
+                comment.value = comment.value.trim()
+                if (comment.value == ""){
+                    alert("You cannot leave this empty!")
+                    return
+                }
 
-            fetch(`/post/${id}`, {
-                method : "POST",
-                headers : {
-                    "Source" : "post_comment",
-                    "Content-Type" : "application/json",
-                    "X-CSRFToken" : csrf
-                },
-                body : comment.value
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                if (data.success == true){
-                    var html = `<div class="bg-white px-4 py-2 rounded-2xl my-4">
-                    <div class="flex justify-center items-center my-2">
-                        <a href="{% url 'profile' user.username %}">
-                            <img src="{{user.profile_picture.url }}" class="rounded-full w-16 h-16 object-cover border-2 border-gray-300">
-                        </a>
-                        <div class="flex flex-col ml-2 justify-between h-max w-11/12 rounded-2xl overflow-hidden">
-                            <a href="{% url 'profile' user.username %}" class="font-bold text-xl m-2 mb-0 ml-4 hover:underline">{{user.username}}</a>
-                            <h1 class="resize-none ml-2 h-full p-2 pt-0 w-full whitespace-pre-line break-all">${comment.value}</h1>
+                fetch(`/post/${id}`, {
+                    method : "POST",
+                    headers : {
+                        "Source" : "post_comment",
+                        "Content-Type" : "application/json",
+                        "X-CSRFToken" : csrf
+                    },
+                    body : comment.value
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    if (data.success == true){
+                        var html = `<div class="bg-white px-4 py-2 rounded-2xl my-4">
+                        <div class="flex justify-center items-center my-2">
+                            <a href="{% url 'profile' user.username %}">
+                                <img src="{{user.profile_picture.url }}" class="rounded-full w-16 h-16 object-cover border-2 border-gray-300">
+                            </a>
+                            <div class="flex flex-col ml-2 justify-between h-max w-11/12 rounded-2xl overflow-hidden">
+                                <a href="{% url 'profile' user.username %}" class="font-bold text-xl m-2 mb-0 ml-4 hover:underline">{{user.username}}</a>
+                                <h1 class="resize-none ml-2 h-full p-2 pt-0 w-full whitespace-pre-line break-all">${comment.value}</h1>
+                            </div>
                         </div>
-                    </div>
-                </div>`
-                    comment_section.innerHTML = html + comment_section.innerHTML
-                    comment.value = ""
-                }
-                else{
-                    alert("error while posting comment")
-                }
-            })
-        }
-    "{% endif %}"
-    </script>
+                    </div>`
+                        comment_section.innerHTML = html + comment_section.innerHTML
+                        comment.value = ""
+                    }
+                    else{
+                        alert("error while posting comment")
+                    }
+                })
+            }
+        </script>
+    {% endif %}
 
 {% endblock %}
