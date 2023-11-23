@@ -39,7 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     document.querySelectorAll(".date_posted").forEach(element => {
-        console.log(element.innerText)
         const current = new Date();
         const post_date = new Date(element.innerText);
         let diff = (current - post_date)/1000;
@@ -87,7 +86,6 @@ const delete_buttons = document.querySelectorAll("#delete_post")
 
 like_buttons.forEach((like_button) =>{
     like_button.addEventListener("click", () => {
-        console.log(like_button)
         const post = like_button.parentElement.parentElement.parentElement
         const like = like_button.querySelector('svg')
         const like_count = like_button.querySelector("#like_count")

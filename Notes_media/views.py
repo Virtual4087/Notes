@@ -216,7 +216,6 @@ def profile(request, username):
 
     if request.method == "POST":
         source = request.headers.get("Source")
-
         if source == "follow_unfollow":
             try:
                 data = json.loads(request.body.decode('utf-8'))
@@ -271,7 +270,7 @@ def profile(request, username):
                 return JsonResponse({"success" : True})
             except:
                 return JsonResponse({"success" : False})
-
+    
     return render(request, 'profile.html', {
         'profile': user
     })
