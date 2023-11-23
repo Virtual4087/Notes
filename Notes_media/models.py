@@ -20,10 +20,7 @@ class Level(models.Model):
 
 class User(AbstractUser):
     level = models.ForeignKey(
-        Level, on_delete=models.SET_NULL, related_name="users_of_this_level", null=True, blank=True
-    )
-    category = models.ManyToManyField(
-        Category, blank=True, related_name="users_of_this_category"
+        Level, on_delete=models.SET_DEFAULT, related_name="users_of_this_level", default=1
     )
     following = models.ManyToManyField(
         "self", blank=True, related_name="follower", symmetrical=False
@@ -50,8 +47,12 @@ class Post(models.Model):
     file = models.FileField(blank=True, upload_to="pdf_files")
     like = models.ManyToManyField(User, blank=True, related_name="liked_posts")
     date = models.DateTimeField(auto_now_add=True)
-    category = models.ForeignKey(Category, related_name="categoty_posts", blank = True, on_delete = models.SET_NULL, null = True)
-    level = models.ForeignKey(Level, related_name="level_posts", blank = True, on_delete = models.SET_NULL, null = True)
+    level = models.ForeignKey(
+        Level, on_delete=models.SET_DEFAULT, related_name="posts_of_this_level", default=1
+    )
+    category = models.ForeignKey(
+        Category, on_delete=models.SET_DEFAULT, related_name="posts_of_this_category", default=1
+    )
 
     def __str__(self):
         return f"{self.user.username} - {self.title}"

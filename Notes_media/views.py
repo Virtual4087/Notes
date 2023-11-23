@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.urls import reverse
 from django.http import HttpResponse, JsonResponse, HttpRequest
 from django.db import IntegrityError
-from .models import User, Post, Image, Comment
+from .models import User, Post, Image, Comment, Category, Level
 from django.contrib.auth import login, logout, authenticate
 import magic
 from django.contrib import messages
@@ -15,7 +15,7 @@ def index(request: HttpRequest):
 
 def search(request: HttpRequest):
     parameters = request.GET
-    try:
+    if "sort" in parameters:
         sortby = parameters['sort']
         if sortby == 'saved':
             posts = request.user.saved_post.all()
@@ -25,12 +25,18 @@ def search(request: HttpRequest):
             posts = Post.objects.annotate(num_likes = Count("like")).order_by('-num_likes')
         elif sortby == 'following':
             posts = Post.objects.filter(user__in=request.user.following.all())
-    except:
-        try:
-            search = parameters["s"]
-            posts = Post.objects.filter(Q(title__icontains=search) | Q(description__icontains=search)).order_by("-date")
-        except:
-            return redirect("index")
+    elif "search" in parameters:
+        search = parameters["search"]
+        posts = Post.objects.filter(Q(title__icontains=search) | Q(description__icontains=search)).order_by("-date")
+    elif "category" in parameters:
+        category = parameters["category"]
+        posts = Post.objects.filter(category = Category.objects.get(category=category)).order_by("-date")
+    elif "level" in parameters:
+        level = parameters["level"]
+        posts = Post.objects.filter(level = Level.objects.get(level=level)).order_by("-date")
+    else:
+        return redirect("index")
+    
     return render(request, "index.html", {"posts": posts})
 
 
@@ -148,10 +154,12 @@ def createpost(request):
         if request.method == "POST":
             title = request.POST["title"].strip()
             description = request.POST["description"].strip()
+            category =  request.POST["category"]
+            level = request.POST["level"]
 
             try:
                 post = Post.objects.create(
-                    user=request.user, title=title, description=description
+                    user=request.user, title=title, description=description, category=Category.objects.get(category=category), level=Level.objects.get(level=level)
                 )
                 post.save()
 
@@ -192,7 +200,10 @@ def createpost(request):
                         messages.error(request, "Error while uploading image!")
                         return redirect("create")
             return redirect("index")
-        return render(request, 'create-post.html')
+        return render(request, 'create-post.html', {
+            "categories" : Category.objects.all(),
+            "levels" : Level.objects.all()
+        })
     else:
         return redirect('index')
     
@@ -218,6 +229,8 @@ def profile(request, username):
                 return JsonResponse({"success" : False})
         
         elif source == "change_pp":
+            if request.user != user:
+                return JsonResponse({"success" : False})
             try:
                 image = request.FILES.get('file')
                 mime = magic.Magic()
@@ -227,20 +240,37 @@ def profile(request, username):
                 
                 previous_image = request.user.profile_picture
 
+                user.profile_picture = image
+                user.save()
+    
                 if previous_image and "default_images/" not in previous_image.url:
                     try:
                         previous_image.delete()
                     except:
                         pass
                 
-                request.user.profile_picture = image
-                request.user.save()
-    
-                
+                if user.profile_picture.url.strip() == "":
+                    user.profile_picture.url = "default_images/unknown_pp.jpg"
+                    user.prifile_picture.save()
 
                 return JsonResponse({"success" : True})
             except Exception as e:
                 return JsonResponse({"success" : str(e)})
+    
+    elif request.method == "PUT":
+        source = request.headers.get("Source")
+        if source == "edit_about":
+            if request.user != user:
+                return JsonResponse({"success" : False})
+            
+            data = request.body.decode('utf-8')
+
+            try:
+                user.about = data
+                user.save()
+                return JsonResponse({"success" : True})
+            except:
+                return JsonResponse({"success" : False})
 
     return render(request, 'profile.html', {
         'profile': user

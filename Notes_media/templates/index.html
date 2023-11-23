@@ -43,11 +43,11 @@
 
                 <div class="text-4xl flex flex-col mt-2">
                     <div class="flex mt-1">
-                        <a href="{% url 'index' %}" class="mr-1 bg-opacity-50 mt-1 group flex items-center w-max text-sm px-4 py-1 mb-3 text-base bg-blue-200 leading-6 font-medium rounded-2xl hover:bg-blue-300 hover:text-black">
-                            Category{{post.category.category}}
+                        <a href="/search?category={{post.category.category}}" class="mr-1 bg-opacity-50 mt-1 group flex items-center w-max text-sm px-4 py-1 mb-3 text-base bg-blue-200 leading-6 font-medium rounded-2xl hover:bg-blue-300 hover:text-black">
+                            {{post.category.category}}
                         </a>
-                        <a href="{% url 'index' %}" class="bg-opacity-50 mt-1 group flex items-center w-max px-4 text-sm py-1 mb-3 text-base bg-blue-200 leading-6 font-medium rounded-full hover:bg-blue-300 hover:text-black">
-                            Level{{post.level.level}}
+                        <a href="/search?level={{post.level.level}}" class="bg-opacity-50 mt-1 group flex items-center w-max px-4 text-sm py-1 mb-3 text-base bg-blue-200 leading-6 font-medium rounded-full hover:bg-blue-300 hover:text-black">
+                            {{post.level.level}}
                         </a>
                     </div> 
                 </div>
