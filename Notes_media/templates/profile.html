@@ -106,43 +106,44 @@
                     
                     <div class="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
                     <h4 class="text-xl text-gray-900 font-bold mb-4">Posts</h4>  
-
-                    <div class="flex gap-3 bg-gray-100 p-3 items-center rounded-2xl lg:mb-4">
-                        <a
-                            href="?sort=new"
-                            id="sortby"
-                            class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl
-                            {% if request.GET.sort != 'top' and request.GET.sort != 'old' %}
-                                bg-black text-white
-                            {% else %}
-                                bg-gray-300 hover:bg-gray-400 hover:text-black
-                            {% endif %}
-                            ">
-                            New
-                        </a>
-                        <a
-                            href="?sort=top"
-                            class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl
-                            {% if request.GET.sort == 'top' %}
-                                bg-black text-white
-                            {% else %}
-                                bg-gray-300 hover:bg-gray-400 hover:text-black
-                            {% endif %}
-                             ">
-                            Top
-                        </a>
-                        <a
-                            href="?sort=old"
-                            class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl 
-                            {% if request.GET.sort == 'old' %}
-                                bg-black text-white
-                            {% else %}
-                                bg-gray-300 hover:bg-gray-400 hover:text-black
-                            {% endif %}
-                            ">
-                            Old
-                        </a>
-                    </div>
+                    {% if profile.user_posts %}
+                        <div class="flex gap-3 bg-gray-100 p-3 items-center rounded-2xl lg:mb-4">
+                            <a
+                                href="?sort=new"
+                                id="sortby"
+                                class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl
+                                {% if request.GET.sort != 'top' and request.GET.sort != 'old' %}
+                                    bg-black text-white
+                                {% else %}
+                                    bg-gray-300 hover:bg-gray-400 hover:text-black
+                                {% endif %}
+                                ">
+                                New
+                            </a>
+                            <a
+                                href="?sort=top"
+                                class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl
+                                {% if request.GET.sort == 'top' %}
+                                    bg-black text-white
+                                {% else %}
+                                    bg-gray-300 hover:bg-gray-400 hover:text-black
+                                {% endif %}
+                                ">
+                                Top
+                            </a>
+                            <a
+                                href="?sort=old"
+                                class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl 
+                                {% if request.GET.sort == 'old' %}
+                                    bg-black text-white
+                                {% else %}
+                                    bg-gray-300 hover:bg-gray-400 hover:text-black
+                                {% endif %}
+                                ">
+                                Old
+                            </a>
+                        </div>
+                    {% endif }
                     {% if request.GET.sort == 'old' %}
 
                         {% for post in profile.user_posts.all %}
