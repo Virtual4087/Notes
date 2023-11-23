@@ -33,7 +33,7 @@
                     <input
                         class="border-2 border-gray-300 w-full pl-3 bg-white h-9 pr-10 rounded-lg text-sm focus:outline-none"
                         type="search"
-                        name="s"
+                        name="search"
                         placeholder="Search"
                     />
                     <button
@@ -64,11 +64,11 @@
                     <!-- Profile -->
                     {% if user.is_authenticated %} 
                         <a href="{% url 'profile' user.username %}" class="text-white"> 
-                            <img src="{{user.profile_picture.url}}" class="w-10 border-2 border-gray-300 rounded-full">
+                            <img src="{{user.profile_picture.url}}" class="w-10 h-10 border-2 object-cover border-gray-300 rounded-full">
                         </a>
                     {% else %}
                         <a href="{% url 'login' %}" class="text-white">
-                            <img src="/media/default_images/unknown_pp.jpg" class="w-10 border-2 border-gray-300 rounded-full">
+                            <img src="/media/default_images/unknown_pp.jpg" class="w-10 h-10 object-cover border-2 border-gray-300 rounded-full">
                         </a>
                     {% endif %}
                 </div>
