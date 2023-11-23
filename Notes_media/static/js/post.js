@@ -112,7 +112,6 @@ const delete_buttons = document.querySelectorAll("#delete_post")
 
 like_buttons.forEach((like_button) =>{
     like_button.addEventListener("click", () => {
-        console.log(like_button)
         const post = like_button.parentElement.parentElement.parentElement
         const like = like_button.querySelector('svg')
         const like_count = like_button.querySelector("#like_count")
