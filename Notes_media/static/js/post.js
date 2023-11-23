@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('#description_view').forEach(element=>{
 
         var htmlContent = marked.parse(element.innerText);
+        // Format for MD
         htmlContent = htmlContent.replace(/<h1/g, '<h1 class="text-5xl font-semibold"');
         htmlContent = htmlContent.replace(/<h2/g, '<h2 class="text-4xl font-bold "');
         htmlContent = htmlContent.replace(/<h3/g, '<h3 class="text-3xl font-bold"');
@@ -14,32 +15,56 @@ document.addEventListener("DOMContentLoaded", () => {
 
     })
 
-    const sub = document.querySelector('#Subject')
-    const edu = document.querySelector('#eduLevel')
+    const Sub = document.querySelectorAll('#Subject')
+    const Edu = document.querySelectorAll('#eduLevel')
+
     const Science = ['Physics', 'Biology', 'Chemistry']
     const Finance = ['Economics', 'Accounts']
     const SocialScience = ['Social', 'History']
+    
+    Sub.forEach((sub) => {
+        // Subject Tags
+        if (Science.includes(sub.innerText)){
+            sub.classList.replace("bg-gray-300", "bg-lime-300")
+            sub.classList.replace("hover:bg-gray-600", "hover:bg-lime-600")
+        }
+        else if (sub.innerText == 'Math'){  
+            sub.classList.replace("bg-gray-300", "bg-blue-300")
+            sub.classList.replace("hover:bg-gray-600", "hover:bg-blue-800")
+        }
+        else if (Finance.includes(sub.innerText)){
+            sub.classList.replace("bg-gray-300", "bg-yellow-400")
+            sub.classList.replace("hover:bg-gray-600", "hover:bg-amber-400")
+        }
+        else if (SocialScience.includes(sub.innerText)){
+            sub.classList.replace("bg-gray-300", "brown-light")
+            sub.classList.replace("hover:bg-gray-600", "hover:brown-dark")
+        }
+    })
 
+    
+    Edu.forEach((edu) => {
+        // Educaiton Level Tags
+        if (edu.innerText == 'Elementary'){
+            edu.classList.replace("bg-gray-300", "bg-yellow-400")
+            edu.classList.replace("hover:bg-gray-600", "hover:bg-yellow-500")
+        }
+        else if (edu.innerText == 'Middle School'){
+            edu.classList.replace("bg-gray-300", "bg-teal-400")
+            edu.classList.replace("hover:bg-gray-600", "hover:bg-teal-500")
+        }
+        else if (edu.innerText == 'High School'){
+            edu.classList.replace("bg-gray-300", "bg-red-400")
+            edu.classList.replace("hover:bg-gray-600", "hover:bg-red-700")
+        }
+        else if (edu.innerText == 'University'){
+            edu.classList.replace("bg-gray-300", "bg-blue-600")
+            edu.classList.replace("hover:bg-gray-600", "hover:bg-blue-700")
+        }
+    })
 
-    if (Science.includes(sub.innerText)){
-        sub.classList.replace("bg-gray-300", "bg-lime-300")
-        sub.classList.replace("hover:bg-gray-600", "hover:bg-lime-600")
-    }
-    else if (sub.innerText == 'Math'){  
-        sub.classList.replace("bg-gray-300", "bg-blue-300")
-        sub.classList.replace("hover:bg-gray-600", "hover:bg-blue-800")
-    }
-    else if (Finance.includes(sub.innerText)){
-        sub.classList.replace("bg-gray-300", "bg-yellow-400")
-        sub.classList.replace("hover:bg-gray-600", "hover:bg-amber-400")
-    }
-    else if (SocialScience.includes(sub.innerText)){
-        sub.classList.replace("bg-gray-300", "brown-light")
-        sub.classList.replace("hover:bg-gray-600", "brown-dark")
-    }
 
     document.querySelectorAll(".date_posted").forEach(element => {
-        console.log(element.innerText)
         const current = new Date();
         const post_date = new Date(element.innerText);
         let diff = (current - post_date)/1000;
