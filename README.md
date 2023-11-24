@@ -1,4 +1,4 @@
-# Notebook - Social Media for Learning 📚🌐
+    # Notebook - Social Media for Learning 📚🌐
 
 ## Overview
 
@@ -72,19 +72,15 @@ To get started with Notebook, follow these steps:
 
 - **Django**: Backend framework for robust and scalable development.
 - **Tailwind CSS**: Frontend framework for a modern and responsive user interface.
-- **___**: (Any additional technologies)
 
 ## Getting Started 🚀
 
 To start using Notebook, follow these steps:
 
-1. Create a user account on [http://localhost:8000/signup](http://localhost:8000/signup).
+1. Create a user account by clicking the Login Button.
 2. Explore the platform by scrolling through the feed or posting educational content.
 3. Engage with the community by commenting on posts and saving valuable content.
-
-## Usage 🚀
-
-_____
+4. Create your own content and share it.
 
 ## Contributing 🤝
 
