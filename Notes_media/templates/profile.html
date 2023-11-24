@@ -52,7 +52,7 @@
             <div class="my-4 flex flex-col 2xl:flex-row space-y-4 2xl:space-y-0 2xl:space-x-4">
                 <div class="w-full flex flex-col relative 2xl:w-1/3">
                     <div class="flex-1 bg-white rounded-lg relative shadow-xl p-8 profileInfo">
-                        <div class="self-end absolute right-0 top-0 m-2 p-2 rounded-full hover:bg-gray-100 cursor-pointer">
+                        <div id="edit_info" class="self-end absolute right-0 top-0 m-2 p-2 rounded-full hover:bg-gray-100 cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                                 <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
@@ -63,22 +63,33 @@
                         <div class="mt-3 text-gray-700">
                             <li class="flex border-b py-2">
                                 <span class="font-bold w-24">Full name:</span>
-                                <span class="text-gray-700">___</span>
+                                <span class="text-gray-700 outline-none" contenteditable="false" id="fullName">___</span>
                             </li>
                             <li class="flex border-b py-2">
                                 <span class="font-bold w-24">Education:</span>
-                                <span class="text-gray-700">___</span>
+                                <span class="text-gray-700 outline-none" contenteditable="false" id="userEducation">___</span>
                             </li>
                             <li class="flex border-b py-2">
                                 <span class="font-bold w-24">Birthday:</span>
-                                <span class="text-gray-700">___</span>
-                            </li>
-                            <li class="flex border-b py-2">
-                                <span class="font-bold w-24">Email:</span>
-                                <span class="text-gray-700">___</span>
+                                <input type="date">
                             </li>
                             <li class="flex border-b py-2">
                                 <span class="font-bold w-24">Location:</span>
+                                <span class="text-gray-700 outline-none" contenteditable="false" id="userLocation">___</span>
+                            </li>
+                            <li class="flex border-b py-2">
+                                <span class="font-bold w-24">Email:</span>
+                                <span class="text-gray-700">{{profile.email}}</span>
+                            </li>
+                            <div class="mr-auto w-max flex gap-2 mt-4">
+                                <button type="button" id="save_info" class="btn rounded-lg p-1 px-4 font-semibold cursor-pointer bg-green-500 text-white hover:bg-green-600" hidden>Save</button>
+                                <button type="button" id="cancel_info" class="btn rounded-lg p-1 px-4 font-semibold cursor-pointer bg-gray-400 text-white hover:bg-gray-500" hidden>Cancel</button>
+                            </div>
+                        </div>
+                        <h4 class="text-xl text-gray-900 font-bold mt-8">Following</h4>
+                        <div class="mt-3 text-gray-700">
+                            <li class="flex border-b py-2">
+                                <span class="font-bold w-24">User-1</span>
                                 <span class="text-gray-700">___</span>
                             </li>
                         </div>
@@ -106,44 +117,43 @@
                     
                     <div class="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
                     <h4 class="text-xl text-gray-900 font-bold mb-4">Posts</h4>  
-
                     {% if profile.user_posts.count > 0 %}
-                    <div class="flex gap-3 bg-gray-100 p-3 items-center rounded-2xl lg:mb-4">
-                        <a
-                            href="?sort=new"
-                            id="sortby"
-                            class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl
-                            {% if request.GET.sort != 'top' and request.GET.sort != 'old' %}
-                                bg-black text-white
-                            {% else %}
-                                bg-gray-300 hover:bg-gray-400 hover:text-black
-                            {% endif %}
-                            ">
-                            New
-                        </a>
-                        <a
-                            href="?sort=top"
-                            class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl
-                            {% if request.GET.sort == 'top' %}
-                                bg-black text-white
-                            {% else %}
-                                bg-gray-300 hover:bg-gray-400 hover:text-black
-                            {% endif %}
-                             ">
-                            Top
-                        </a>
-                        <a
-                            href="?sort=old"
-                            class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl 
-                            {% if request.GET.sort == 'old' %}
-                                bg-black text-white
-                            {% else %}
-                                bg-gray-300 hover:bg-gray-400 hover:text-black
-                            {% endif %}
-                            ">
-                            Old
-                        </a>
-                    </div>
+                        <div class="flex gap-3 bg-gray-100 p-3 items-center rounded-2xl lg:mb-4">
+                            <a
+                                href="?sort=new"
+                                id="sortby"
+                                class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl
+                                {% if request.GET.sort != 'top' and request.GET.sort != 'old' %}
+                                    bg-black text-white
+                                {% else %}
+                                    bg-gray-300 hover:bg-gray-400 hover:text-black
+                                {% endif %}
+                                ">
+                                New
+                            </a>
+                            <a
+                                href="?sort=top"
+                                class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl
+                                {% if request.GET.sort == 'top' %}
+                                    bg-black text-white
+                                {% else %}
+                                    bg-gray-300 hover:bg-gray-400 hover:text-black
+                                {% endif %}
+                                ">
+                                Top
+                            </a>
+                            <a
+                                href="?sort=old"
+                                class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl 
+                                {% if request.GET.sort == 'old' %}
+                                    bg-black text-white
+                                {% else %}
+                                    bg-gray-300 hover:bg-gray-400 hover:text-black
+                                {% endif %}
+                                ">
+                                Old
+                            </a>
+                        </div>
                     {% endif %}
 
                     {% if profile.user_posts.count > 0 %}
@@ -256,8 +266,32 @@
                 const edit_about = document.querySelector("#edit_about")
                 const save_about = document.querySelector("#save_about")
                 const cancel_about = document.querySelector("#cancel_about")
+
+                const uname = document.querySelector('#fullName')
+                const ueducation = document.querySelector('#userEducation')
+                const birth = document.querySelector('#userBrithday')
+                const location = document.querySelector('#userLocation')
+
+                const edit_info = document.querySelector("#edit_info")
+                const save_info = document.querySelector("#save_info")
+                const cancel_info = document.querySelector("#cancel_info")
+
                 const char_count = document.querySelector("#char-count")
+                
                 var about_text = about.innerText
+                var name_text = uname.innerText
+
+                edit_info.onclick = () => {
+                    save_info.hidden = false
+                    cancel_info.hidden = false
+
+                    uname.contentEditable = true;
+                    ueducation.contentEditable = true;
+                    location.contentEditable = true;
+                }
+                
+
+
 
                 edit_about.onclick = () => {
                     save_about.hidden = false
@@ -269,6 +303,11 @@
                     about.contentEditable = true
 
                     about.focus();       
+                }
+
+                cancel_info.onclick = () => {
+                    save_info.hidden = true
+                    cancel_info.hidden = true
                 }
 
                 about.addEventListener("input", () => {
@@ -350,6 +389,4 @@
             } 
         </script>
     {% endif %}
-
-
 {% endblock %}
