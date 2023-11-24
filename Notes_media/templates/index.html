@@ -1,47 +1,74 @@
 {% extends "layout.html" %}
 {% block body %}
 
+    
     <!--Search Filters-->
-    <div class="flex gap-3 bg-gray-100 p-3 pl-8 items-center rounded-2xl lg:mb-4">
-        <a
-            href="/search?sort=new"
-            class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl 
-            {% if request.GET.sort != 'top' and request.GET.sort != 'following' %}
-                bg-black text-white
-            {% else %}
-                bg-gray-300 hover:bg-gray-400 hover:text-black
-            {% endif %}">
-            New
-        </a>
+    <div class="filter-bar flex bg-gray-100 p-3 pl-8 justify-between rounded-2xl lg:mb-4">
+        <div class="flex gap-3">
+            <a
+                href="/search?sort=new"
+                class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl 
+                {% if request.GET.sort != 'top' and request.GET.sort != 'following' %}
+                    bg-black text-white
+                {% else %}
+                    bg-gray-300 hover:bg-gray-400 hover:text-black
+                {% endif %}">
+                New
+            </a>
 
-        <a
-            href="/search?sort=top"
-            class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl 
-            {% if request.GET.sort == 'top'%}
-                bg-black text-white
-            {% else %}
-                bg-gray-300 hover:bg-gray-400 hover:text-black
-            {% endif %}">
-            Top
-        </a>
+            <a
+                href="/search?sort=top"
+                class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl 
+                {% if request.GET.sort == 'top'%}
+                    bg-black text-white
+                {% else %}
+                    bg-gray-300 hover:bg-gray-400 hover:text-black
+                {% endif %}">
+                Top
+            </a>
 
-        <a
-            href="/search?sort=following"
-            class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl 
-            {% if request.GET.sort == 'following' %}
-                bg-black text-white
-            {% else %}
-                bg-gray-300 hover:bg-gray-400 hover:text-black
-            {% endif %}">
-            Following
-        </a>
+            <a
+                href="/search?sort=old"
+                class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl 
+                {% if request.GET.sort == 'old' %}
+                    bg-black text-white
+                {% else %}
+                    bg-gray-300 hover:bg-gray-400 hover:text-black
+                {% endif %}
+                ">
+                Old
+            </a>
+        </div>
+
+        <div class="flex gap-3">
+            <a
+                href="/search?sort=following"
+                class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl 
+                {% if request.GET.sort == 'following' %}
+                    bg-black text-white
+                {% else %}
+                    bg-gray-300 hover:bg-gray-400 hover:text-black
+                {% endif %}">
+                Following
+            </a>
+
+            <a
+                href="/search?sort=saved"
+                class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl 
+                {% if request.GET.sort == 'following' %}
+                    bg-black text-white
+                {% else %}
+                    bg-gray-300 hover:bg-gray-400 hover:text-black
+                {% endif %}">
+                Saved
+            </a>
+        
+        </div>
+        
     </div>
 
     <!--Posts-->
     <div>
-        {% if posts != 0 %}
-            
-        {% endif %}
         {% for post in posts %}
         <div class="h-max w-full bg-gray-100 flex p-8" id="{{post.id}}" data-csrf="{{csrf_token}}">
             <div class="border bg-white w-full rounded-2xl p-6">
@@ -138,11 +165,28 @@
                 </div>
             </div>
         </div>
+        {% empty %}
+        <div class=" pt-4 w-full h-full flex flex-col items-center">
+            <img src="https://img.freepik.com/free-vector/curiosity-search-concept-illustration_114360-10850.jpg?w=740&t=st=1700828359~exp=1700828959~hmac=a815fa8e065867b8e3cff99ee50d5889b779af0b1e5462d9041670989e1b0cda"
+            class="h-1/3 w-1/3">
+            <div class="text-5xl font-bold mb-3 cursor-default">Nothing Found</div>
+            <div class="text-sm mb-14 cursor-default">Sorry! We couldn't find what you were looking for.</div>
+            <a href="https://www.freepik.com/free-vector/curiosity-search-concept-illustration_30590326.htm#query=Magnifying%20Glass&position=2&from_view=search&track=ais&uuid=89399fb4-d375-48dc-ac89-84210fa1cad6"
+            class="w-max">Image by storyset on Freepik</a>
+        </div>  
         {% endfor %}
     </div>
+    
 
     {% load static %}
     <script>
+
+        const url = window.location.href
+
+        if (url.includes('/search?search=') || url.includes('/search?sort=saved') || url.includes('/search?sort=following')){
+            document.querySelector('.filter-bar').classList.add('hidden')
+        }
+
         function countOccurrences(sentence, char) {
             // Use a regular expression to match the character globally in the sentence
             const regex = new RegExp(char, 'g');

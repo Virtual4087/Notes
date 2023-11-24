@@ -146,25 +146,37 @@
                     </div>
                     {% endif %}
 
-                    {% if request.GET.sort == 'old' %}
+                    {% if profile.user_posts.count > 0 %}
+                        {% if request.GET.sort == 'old' %}
 
-                        {% for post in profile.user_posts.all %}
-                            {% include 'filter_posts.html' with post=post %}
-                        {% endfor %}
+                            {% for post in profile.user_posts.all %}
+                                {% include 'filter_posts.html' with post=post %}
+                            {% endfor %}
 
-                    {% elif request.GET.sort == 'top' %}
+                        {% elif request.GET.sort == 'top' %}
 
-                        {% for post in profile.user_posts.all|sort_by_likes %}
-                            {% include 'filter_posts.html' with post=post %}
-                        {% endfor %}
+                            {% for post in profile.user_posts.all|sort_by_likes %}
+                                {% include 'filter_posts.html' with post=post %}
+                            {% endfor %}
+
+                        {% else %}
+
+                            {% for post in profile.user_posts.all|dictsortreversed:"date" %}
+                                {% include 'filter_posts.html' with post=post %}
+                            {% endfor %}
+                        
+                        {% endif %}
 
                     {% else %}
-
-                        {% for post in profile.user_posts.all|dictsortreversed:"date" %}
-                            {% include 'filter_posts.html' with post=post %}
-                        {% endfor %}
-
+                    <div class=" pt-4 w-full h-full flex flex-col items-center">
+                        <img src="https://img.freepik.com/free-vector/no-data-concept-illustration_114360-2506.jpg?w=1060&t=st=1700829588~exp=1700830188~hmac=e3cf6566cd6637616430db8a0f042ca617299ad62d74ccbf9b1e24673a22dfb9"
+                        class="h-1/2 w-1/4">
+                        <div class="text-5xl font-bold mb-6 cursor-default">No Posts Found</div>
+                        <a href="https://www.freepik.com/free-vector/no-data-concept-illustration_8961448.htm#query=empty&position=0&from_view=search&track=sph&uuid=60e0c3dd-7c81-4886-8a15-fa5205cf6a71"
+                        class="text-xs">Image by storyset  on Freepik</a>
+                    </div>  
                     {% endif %}
+
                     </div>
                 </div>
             </div>
