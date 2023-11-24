@@ -42,6 +42,7 @@ def search(request: HttpRequest):
         except:
             pass
     
+    
     return render(request, "index.html", {"posts": posts})
 
 
