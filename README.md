@@ -10,7 +10,6 @@ Notebook is a revolutionary social media web app designed to transform the digit
 2. [Features](#features)
 3. [Technologies Used](#technologies-used)
 4. [Getting Started](#getting-started)
-5. [Usage](#usage)
 6. [Contributing](#contributing)
 7. [Future Enhancements](#future-enhancements)
 
