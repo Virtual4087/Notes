@@ -106,7 +106,7 @@
                     
                     <div class="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
                     <h4 class="text-xl text-gray-900 font-bold mb-4">Posts</h4>  
-                    {% if profile.user_posts %}
+                    {% if profile.user_posts.count > 0 %}
                         <div class="flex gap-3 bg-gray-100 p-3 items-center rounded-2xl lg:mb-4">
                             <a
                                 href="?sort=new"
@@ -143,7 +143,7 @@
                                 Old
                             </a>
                         </div>
-                    {% endif }
+                    {% endif %}
                     {% if request.GET.sort == 'old' %}
 
                         {% for post in profile.user_posts.all %}
@@ -336,6 +336,4 @@
             } 
         </script>
     {% endif %}
-
-
 {% endblock %}

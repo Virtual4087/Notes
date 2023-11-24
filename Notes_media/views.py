@@ -14,6 +14,7 @@ def index(request: HttpRequest):
 
 
 def search(request: HttpRequest):
+    posts = None
     parameters = request.GET
     if "sort" in parameters:
         sortby = parameters['sort']
@@ -29,12 +30,19 @@ def search(request: HttpRequest):
         search = parameters["search"]
         posts = Post.objects.filter(Q(title__icontains=search) | Q(description__icontains=search)).order_by("-date")
     elif "category" in parameters:
-        category = parameters["category"]
-        posts = Post.objects.filter(category = Category.objects.get(category=category)).order_by("-date")
+        try:
+            category = parameters["category"]
+            posts = Post.objects.filter(category = Category.objects.get(category=category)).order_by("-date")
+        except:
+            pass
     elif "level" in parameters:
-        level = parameters["level"]
-        posts = Post.objects.filter(level = Level.objects.get(level=level)).order_by("-date")
-    else:
+        try:
+            level = parameters["level"]
+            posts = Post.objects.filter(level = Level.objects.get(level=level)).order_by("-date")
+        except:
+            pass
+    
+    if not posts:
         return redirect("index")
     
     return render(request, "index.html", {"posts": posts})
