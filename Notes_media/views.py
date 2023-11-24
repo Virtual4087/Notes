@@ -42,8 +42,6 @@ def search(request: HttpRequest):
         except:
             pass
     
-    if not posts:
-        return redirect("index")
     
     return render(request, "index.html", {"posts": posts})
 

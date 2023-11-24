@@ -31,7 +31,7 @@
                 <div class="flex items-center mt-2">
                     <p class="text-4xl">{{ profile.username }}</p>
                 </div>
-                <p class="text-gray-700">Occupation</p>
+                <p class="text-gray-700"><span id="followers_count">{{ profile.follower.count }}</span> followers</p>
                 </div>
                 {% if user.is_authenticated and user != profile %}
                     <div class="flex-1 flex flex-col items-center lg:items-end justify-end px-8 mt-2">
@@ -74,13 +74,28 @@
                                 <span class="text-gray-700">___</span>
                             </li>
                             <li class="flex border-b py-2">
-                                <span class="font-bold w-24">Email:</span>
+                                <span class="font-bold w-24">Email: </span>
                                 <span class="text-gray-700">___</span>
                             </li>
                             <li class="flex border-b py-2">
-                                <span class="font-bold w-24">Location:</span>
+                                <span class="font-bold w-24">Location: </span>
                                 <span class="text-gray-700">___</span>
                             </li>
+                        </div>
+
+                        <h4 class="text-xl text-gray-900 font-bold my-4 mt-8">Following</h4>
+                        <div>
+                            {% for user in profile.following.all %}
+                                <div class="flex items-center my-2 gap-2">
+                                    <a href="{% url 'profile' user.username %}">
+                                        <img src="{{user.profile_picture.url }}" class="rounded-full w-12 h-12 object-cover border-2 border-gray-300">
+                                    </a>
+                                    <div class="flex flex-col justify-between overflow-hidden">
+                                        <a href="{% url 'profile' user.username %}" class="font-bold text-lg hover:underline">{{user.username}}</a>
+                                        <h1 class="">{{user.follower.count}} followers</h1>
+                                    </div>
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -169,6 +184,7 @@
         </div> 
     {% endif %}
 
+    <script src="{% static 'js/index.js' %}"></script>
     <script src="{% static 'js/post.js' %}"></script>
     {% if user == profile %}
         <script>
@@ -177,11 +193,14 @@
                 var sidebar = document.querySelector('.profileInfo');
                 var threshold = 500;
 
-                if (window.pageYOffset > threshold) {
-                    sidebar.classList.value = 'sticky h-screen top-20 w-full bg-white rounded-lg shadow-xl p-8 profileInfo';
-                } else if (window.pageYOffset <= threshold) {
-                    sidebar.classList.value = 'flex-1 bg-white rounded-lg relative shadow-xl p-8 profileInfo'
-                };
+                if (window.screen.width >= 1536 ){
+                    if (window.pageYOffset > threshold) {
+                        sidebar.classList.value = 'sticky h-screen top-20 w-full bg-white rounded-lg shadow-xl p-8 profileInfo';
+                    } else if (window.pageYOffset <= threshold) {
+                        sidebar.classList.value = 'flex-1 bg-white rounded-lg relative shadow-xl p-8 profileInfo'
+                    };
+                }
+
             };
 
             document.addEventListener("DOMContentLoaded", () => {
@@ -305,7 +324,8 @@
     {% if user.is_authenticated and user != profile %}
         <script>
             document.querySelector(".follow_unfollow").onclick = (event) => {
-                button = event.target
+                const button = event.target
+                const followers_count = document.querySelector("#followers_count")
                 fetch("", {
                     method : "POST",
                     headers : {
@@ -326,10 +346,12 @@
                             button.id = "unfollow"
                             button.innerText = "Unfollow"
                             button.classList.value = "btn rounded-full p-1 px-4 font-semibold cursor-pointer ml-2 text-black bg-white border-2 border-black hover:text-red-800 hover:border-red-800 follow_unfollow"
+                            followers_count.innerText = parseInt(followers_count.innerText) + 1
                         }else{
                             button.id = "follow"
                             button.innerText = "Follow"
                             button.classList.value = "btn rounded-full p-1 px-4 font-semibold cursor-pointer ml-2 text-white bg-green-500 border-2 border-green-500 hover:bg-green-900 hover:border-green-900 hover:text-green-300 follow_unfollow"
+                            followers_count.innerText = parseInt(followers_count.innerText) - 1
                         }
                     }
                 })
