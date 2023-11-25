@@ -1,13 +1,13 @@
 
 <div class="h-max w-full bg-white flex justify-center" id="{{post.id}}" data-csrf="{{csrf_token}}">
-    <div class= "border bg-white w-full rounded-2xl p-6">
+    <div class= "border bg-white w-full rounded-2xl p-4">
         <div class="flex items-center justify-between">
             <div class="gap-3.5	flex items-center">
                 <a href="{% url 'profile' post.user.username %}">
                     <img src="{{post.user.profile_picture.url}}" class="object-cover border-2 border-gray-300 rounded-full w-14 h-14 hover:brightness-50" />
                 </a>
                 <div class="flex  flex-col">
-                    <a href="{% url 'profile' post.user.username %}"><b class="capitalize text-2xl mb-1 hover:underline">{{ post.user.username }}</b></a>
+                    <a href="{% url 'profile' post.user.username %}"><b class="capitalize font-inter text-xl mb-1 hover:underline">{{ post.user.username }}</b></a>
                     <div class="te xt-gray-400 text-xs date_posted">{{post.date|date:"Y-m-d H:i:s e"}}</div>
                 </div>
             </div>

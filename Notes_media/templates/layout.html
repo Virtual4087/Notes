@@ -9,6 +9,8 @@
         <script type="text/javascript" src="https://www.maths.nottingham.ac.uk/plp/pmadw/LaTeXMathML.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <style type="text/tailwindcss">
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
+            
             @layer utilities {
               .primary-c {
                 background-color: #6A994E;
@@ -22,6 +24,13 @@
               .brown-dark{
                 background-color: #8B735B;
               }
+              .dark-gray{
+                background-color: #22202a;
+              }
+              .font-inter{
+                font-family: 'Inter', sans-serif;
+              }
+
             }
         </style>
         <title>Notebook</title>
@@ -31,7 +40,7 @@
         <nav class="primary-c p-3 fixed w-full z-20">
             <div class="flex justify-between items-center">
                 <!-- Logo -->
-                <a href="{% url 'index'%}" class="ml-2 text-white text-4xl font-bold text-center"
+                <a href="{% url 'index'%}" class="ml-2 font-inter text-white text-4xl font-bold text-center"
                     >Notebook</a
                 >
                 <!-- Search Bar -->
