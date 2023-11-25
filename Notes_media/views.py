@@ -8,41 +8,53 @@ import magic
 from django.contrib import messages
 import json
 from django.db.models import Q, Count
+import os
+from django.conf import settings
+from datetime import datetime
 
 def index(request: HttpRequest):
-    return render(request, "index.html", {"posts": Post.objects.all().order_by('-date')})
+    return render(
+        request, "index.html", {"posts": Post.objects.all().order_by("-date")}
+    )
 
 
 def search(request: HttpRequest):
     posts = None
     parameters = request.GET
     if "sort" in parameters:
-        sortby = parameters['sort']
-        if sortby == 'saved':
+        sortby = parameters["sort"]
+        if sortby == "saved":
             posts = request.user.saved_post.all()
-        elif sortby == 'new':
-            posts = Post.objects.all().order_by('-date')
-        elif sortby == 'top':
-            posts = Post.objects.annotate(num_likes = Count("like")).order_by('-num_likes')
-        elif sortby == 'following':
+        elif sortby == "new":
+            posts = Post.objects.all().order_by("-date")
+        elif sortby == "top":
+            posts = Post.objects.annotate(num_likes=Count("like")).order_by(
+                "-num_likes"
+            )
+        elif sortby == "following":
             posts = Post.objects.filter(user__in=request.user.following.all())
     elif "search" in parameters:
         search = parameters["search"]
-        posts = Post.objects.filter(Q(title__icontains=search) | Q(description__icontains=search)).order_by("-date")
+        posts = Post.objects.filter(
+            Q(title__icontains=search) | Q(description__icontains=search)
+        ).order_by("-date")
     elif "category" in parameters:
         try:
             category = parameters["category"]
-            posts = Post.objects.filter(category = Category.objects.get(category=category)).order_by("-date")
+            posts = Post.objects.filter(
+                category=Category.objects.get(category=category)
+            ).order_by("-date")
         except:
             pass
     elif "level" in parameters:
         try:
             level = parameters["level"]
-            posts = Post.objects.filter(level = Level.objects.get(level=level)).order_by("-date")
+            posts = Post.objects.filter(level=Level.objects.get(level=level)).order_by(
+                "-date"
+            )
         except:
             pass
-    
-    
+
     return render(request, "index.html", {"posts": posts})
 
 
@@ -104,43 +116,43 @@ def post(request, post_id):
     post = Post.objects.get(id=post_id)
 
     if request.method == "GET":
-        return render(request, "post.html", {
-            "post" : post
-        })
+        return render(request, "post.html", {"post": post})
 
     elif request.method == "POST":
         source = request.headers.get("Source")
         if source == "like_unlike":
             try:
-                data = json.loads(request.body.decode('utf-8'))
+                data = json.loads(request.body.decode("utf-8"))
                 if data.get("perform") == "unlike":
                     post.like.remove(request.user)
                 else:
                     post.like.add(request.user)
-                return JsonResponse({"success" : True})
+                return JsonResponse({"success": True})
             except:
-                return JsonResponse({"success" : False})
-            
+                return JsonResponse({"success": False})
+
         elif source == "post_comment":
             try:
-                data = request.body.decode('utf-8')
-                comment = Comment.objects.create(user=request.user, post=post, comment=data)
+                data = request.body.decode("utf-8")
+                comment = Comment.objects.create(
+                    user=request.user, post=post, comment=data
+                )
                 comment.save()
-                return JsonResponse({"success" : True})
+                return JsonResponse({"success": True})
             except:
-                return JsonResponse({"success" : False})
-        
+                return JsonResponse({"success": False})
+
         elif source == "save_post":
             try:
-                data = json.loads(request.body.decode('utf-8'))
+                data = json.loads(request.body.decode("utf-8"))
                 if data["perform"] == "save":
                     request.user.saved_post.add(post)
                 else:
                     request.user.saved_post.remove(post)
-                return JsonResponse({"success" : True})
+                return JsonResponse({"success": True})
             except:
-                return JsonResponse({"success" : False})
-    
+                return JsonResponse({"success": False})
+
     elif request.method == "DELETE":
         try:
             if post.user == request.user:
@@ -148,11 +160,11 @@ def post(request, post_id):
                     image.image.delete()
                 post.file.delete()
                 post.delete()
-                return JsonResponse({"success" : True})
+                return JsonResponse({"success": True})
             else:
-                return JsonResponse({"success" : False})
+                return JsonResponse({"success": False})
         except:
-            return JsonResponse({"success" : False})
+            return JsonResponse({"success": False})
 
 
 def createpost(request):
@@ -160,19 +172,23 @@ def createpost(request):
         if request.method == "POST":
             title = request.POST["title"].strip()
             description = request.POST["description"].strip()
-            category =  request.POST["category"]
+            category = request.POST["category"]
             level = request.POST["level"]
 
             try:
                 post = Post.objects.create(
-                    user=request.user, title=title, description=description, category=Category.objects.get(category=category), level=Level.objects.get(level=level)
+                    user=request.user,
+                    title=title,
+                    description=description,
+                    category=Category.objects.get(category=category),
+                    level=Level.objects.get(level=level),
                 )
                 post.save()
 
             except:
                 messages.error(request, "An error occurred. Couldn't post!")
                 return redirect("create")
-            
+
             if "pdf_file" in request.FILES:
                 file = request.FILES["pdf_file"]
                 mime = magic.Magic()
@@ -196,7 +212,7 @@ def createpost(request):
                         post.delete()
                         messages.error(request, "Error while uploading image!")
                         return redirect("create")
-                
+
                     try:
                         post_image = Image.objects.create(image=image)
                         post_image.save()
@@ -206,13 +222,14 @@ def createpost(request):
                         messages.error(request, "Error while uploading image!")
                         return redirect("create")
             return redirect("index")
-        return render(request, 'create-post.html', {
-            "categories" : Category.objects.all(),
-            "levels" : Level.objects.all()
-        })
+        return render(
+            request,
+            "create-post.html",
+            {"categories": Category.objects.all(), "levels": Level.objects.all()},
+        )
     else:
-        return redirect('index')
-    
+        return redirect("index")
+
 
 def profile(request, username):
     try:
@@ -224,60 +241,63 @@ def profile(request, username):
         source = request.headers.get("Source")
         if source == "follow_unfollow":
             try:
-                data = json.loads(request.body.decode('utf-8'))
+                data = json.loads(request.body.decode("utf-8"))
                 if data.get("perform") == "follow":
                     request.user.following.add(user)
                 else:
                     request.user.following.remove(user)
-                return JsonResponse({"success" : True})
+                return JsonResponse({"success": True})
             except:
-                return JsonResponse({"success" : False})
-        
+                return JsonResponse({"success": False})
+
         elif source == "change_pp":
             if request.user != user:
-                return JsonResponse({"success" : False})
+                return JsonResponse({"success": False})
             try:
-                image = request.FILES.get('file')
+                image = request.FILES.get("file")
                 mime = magic.Magic()
                 file_type = mime.from_buffer(image.read())
                 if not "image" in file_type:
-                    return JsonResponse({"success" : False})
+                    return JsonResponse({"success": False})
                 
-                previous_image = request.user.profile_picture
+                file_path = os.path.join(settings.MEDIA_ROOT, str(user.profile_picture.file))
 
                 user.profile_picture = image
                 user.save()
-    
-                if previous_image and "default_images/" not in previous_image.url:
-                    try:
-                        previous_image.delete()
-                    except:
-                        pass
-                
-                if user.profile_picture.url.strip() == "":
-                    user.profile_picture.url = "default_images/unknown_pp.jpg"
-                    user.prifile_picture.save()
 
-                return JsonResponse({"success" : True})
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+
+                return JsonResponse({"success": True})
             except Exception as e:
-                return JsonResponse({"success" : str(e)})
-    
-    elif request.method == "PUT":
-        source = request.headers.get("Source")
-        if source == "edit_about":
-            if request.user != user:
-                return JsonResponse({"success" : False})
-            
-            data = request.body.decode('utf-8')
+                return JsonResponse({"success": False, "exception": str(e)})
 
+    elif request.method == "PUT":
+        if request.user != user:
+            return JsonResponse({"success": False})
+        
+        source = request.headers.get("Source")
+
+        if source == "edit_about":
+            data = request.body.decode("utf-8")
             try:
                 user.about = data
                 user.save()
-                return JsonResponse({"success" : True})
+                return JsonResponse({"success": True})
             except:
-                return JsonResponse({"success" : False})
-    
-    return render(request, 'profile.html', {
-        'profile': user
-    })
-    
+                return JsonResponse({"success": False})
+            
+        elif source == "edit_info":
+            data = json.loads(request.body.decode("utf-8"))
+            try:
+                user.full_name = data["fullname"]
+                user.level = Level.objects.get(level=data["level"])
+                if data["birthday"]:
+                    user.birthday = data["birthday"]
+                user.location = data["location"]
+                user.save()
+                return JsonResponse({"success": True})
+            except Exception as e:
+                return JsonResponse({"success": False, "error" : str(e)})
+            
+    return render(request, "profile.html", {"profile": user, "categories": Category.objects.all(), "levels": Level.objects.all()})

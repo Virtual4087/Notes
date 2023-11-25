@@ -31,6 +31,12 @@ class User(AbstractUser):
 
     about = models.CharField(blank=True, max_length=200)
 
+    full_name = models.CharField(max_length=30, blank=False, default="None")
+
+    birthday = models.DateField(blank=True)
+
+    location = models.CharField(max_length=20, blank=False, default="None")
+
     def __str__(self):
         return self.username
 
