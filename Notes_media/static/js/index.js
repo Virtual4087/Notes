@@ -10,7 +10,7 @@ function countOccurrences(sentence, char) {
 document.addEventListener("DOMContentLoaded", () => {
     if (window.location.href.includes("/search?sort=saved") || window.location.href .includes("/search?sort=following")){
         document.querySelector(".filter-bar").classList.add("hidden")
-    }    
+    } 
     document.querySelectorAll("#description_view").forEach((desc) => {
         var count = countOccurrences(desc.innerText, "\n")
         if (count > 7){
