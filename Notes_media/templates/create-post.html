@@ -101,7 +101,7 @@
       link.href = URL.createObjectURL(pdf.files[0]);
       const name = pdf.files[0].name;
       link.target = '_blank';
-      link.textContent = "${name} has been uploaded.";
+      link.textContent = "PDF has been uploaded.";
       link.classList.value = "uploaded-pdf font-semibold hover:underline my-2 ml-2"
       pdf_preview.appendChild(link);
     }

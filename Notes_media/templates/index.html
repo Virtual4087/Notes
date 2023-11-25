@@ -1,14 +1,13 @@
 {% extends "layout.html" %}
 {% block body %}
 
-    
     <!--Search Filters-->
-    <div class="filter-bar flex bg-gray-100 p-3 pl-8 justify-between rounded-2xl lg:mb-4">
+    <div class="filter-bar flex bg-gray-100 p-3 pl-8 justify-between lg:mb-4">
         <div class="flex gap-3">
             <a
                 href="/search?sort=new"
                 class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl 
-                {% if request.GET.sort != 'top' and request.GET.sort != 'following' %}
+                {% if not request.GET.sort or request.GET.sort == 'new' %}
                     bg-black text-white
                 {% else %}
                     bg-gray-300 hover:bg-gray-400 hover:text-black
@@ -55,7 +54,7 @@
             <a
                 href="/search?sort=saved"
                 class="group flex items-center w-max text-sm px-4 py-1 text-base leading-6 font-medium rounded-2xl 
-                {% if request.GET.sort == 'following' %}
+                {% if request.GET.sort == 'saved' %}
                     bg-black text-white
                 {% else %}
                     bg-gray-300 hover:bg-gray-400 hover:text-black
