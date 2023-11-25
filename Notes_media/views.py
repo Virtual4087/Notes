@@ -33,6 +33,8 @@ def search(request: HttpRequest):
             )
         elif sortby == "following":
             posts = Post.objects.filter(user__in=request.user.following.all())
+        elif sortby == "old":
+            posts = Post.objects.all().order_by("date")
     elif "search" in parameters:
         search = parameters["search"]
         posts = Post.objects.filter(
