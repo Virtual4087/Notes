@@ -267,7 +267,8 @@ def profile(request, username):
                 user.save()
 
                 if os.path.exists(file_path):
-                    os.remove(file_path)
+                    if not "\default_images\\" in str(file_path):
+                        os.remove(file_path)
 
                 return JsonResponse({"success": True})
             except Exception as e:
