@@ -10,7 +10,6 @@ import json
 from django.db.models import Q, Count
 import os
 from django.conf import settings
-from datetime import datetime
 
 def index(request: HttpRequest):
     return render(

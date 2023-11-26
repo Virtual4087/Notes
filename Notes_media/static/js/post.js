@@ -203,8 +203,5 @@ function save_post(event){
                 save_button.setAttribute('fill', 'none')
             }
         }
-        else{
-            alert("error while saving")
-        }
     })
 }

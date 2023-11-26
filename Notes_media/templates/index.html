@@ -69,7 +69,7 @@
     <!--Posts-->
     <div>
         {% for post in posts %}
-        <div class="h-max w-full bg-gray-100 flex p-8" id="{{post.id}}" data-csrf="{{csrf_token}}">
+        <div class="h-max w-full bg-gray-100 flex p-8 font-inter" id="{{post.id}}" data-csrf="{{csrf_token}}">
             <div class="border bg-white w-full rounded-2xl p-6">
                 <div class="flex items-center justify-between">
                     <div class="gap-3.5	flex items-center mb-2">
@@ -89,13 +89,13 @@
 
                 <div class="text-4xl flex flex-col mt-2">
                     <div class="flex mt-1">
-                        <a href="/search?category={{post.category.category}}" id="Subject" class="mr-1 bg-opacity-50 mt-1 group flex items-center w-max text-sm px-4 py-1 mb-3 text-black bg-gray-300 leading-6 font-medium rounded-2xl hover:bg-gray-600 hover:text-white">
+                        <a href="/search?category={{post.category.category}}" id="Subject" class="mr-1 bg-opacity-50 mt-1 group flex items-center w-max text-sm px-4 py-1 mb-3 text-black bg-gray-300 leading-6 font-semibold rounded-2xl hover:bg-gray-600 hover:text-white">
                             {{post.category.category}}
                         </a>
-                        <a href="/search?level={{post.level.level}}" id="eduLevel" class="bg-opacity-50 mt-1 group flex items-center w-max px-4 text-sm py-1 mb-3 text-black bg-gray-300 leading-6 font-medium rounded-full hover:bg-gray-600 hover:text-white">
+                        <a href="/search?level={{post.level.level}}" id="eduLevel" class="bg-opacity-50 mt-1 group flex items-center w-max px-4 text-sm py-1 mb-3 text-black bg-gray-300 leading-6 font-semibold rounded-full hover:bg-gray-600 hover:text-white">
                             {{post.level.level}}
                         </a>
-                    </div> 
+                    </div>  
                 </div>
 
                 <a href="{% url 'post' post.id%}">

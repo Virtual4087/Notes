@@ -5,9 +5,9 @@
   <form action="{% url 'create' %}" method="post" enctype="multipart/form-data" autocomplete="off" class="editor rounded-lg mx-auto w-11/12 flex flex-col text-gray-800 border border-gray-300 p-4 shadow-lg max-w-2xl">
     {% csrf_token %}
     <div class="flex flex-row mb-4 rounded-2xl">
-      <input class="title rounded-2xl bg-gray-100 border border-gray-200 p-2 pl-3 w-full outline-none" spellcheck="false" placeholder="Title" name="title" type="text" maxlength="100" required>
+      <input class="title rounded-xl bg-gray-100 border border-gray-200 p-2 pl-3 w-full outline-none" spellcheck="false" placeholder="Title" name="title" type="text" maxlength="100" required>
     </div>
-    <textarea class="description rounded-2xl bg-gray-100 sec p-3 h-60 border resize-none border-gray-200 outline-none" spellcheck="false" name="description" placeholder="Describe everything about this post here" id="description"  maxlength="5000" required></textarea>
+    <textarea class="description rounded-xl bg-gray-100 sec p-3 h-60 border resize-none border-gray-200 outline-none" spellcheck="false" name="description" placeholder="Describe everything about this post here" id="description"  maxlength="5000" required></textarea>
     <div class="count ml-auto mt-2 mr-2 text-gray-400 text-xs font-semibold" id="char-count">0/5000</div>
     <div class="my-2 flex flex-col gap-2">
     <div class="w-full">
@@ -57,7 +57,7 @@
 
     <!-- Buttons -->
     <div class="buttons flex mt-3">
-      <div class="btn rounded-full p-1 px-4 font-semibold cursor-pointer bg-gray-100 text-black hover:bg-gray-500 hover:text-white ml-auto">Cancel</div>
+      <button type="reset" class="btn rounded-full p-1 px-4 font-semibold cursor-pointer bg-gray-100 text-black hover:bg-gray-500 hover:text-white ml-auto">Cancel</button>
       <input type="submit" class="btn rounded-full p-1 px-4 font-semibold cursor-pointer ml-2 bg-green-500 text-white hover:bg-green-900 hover:text-green-300">
     </div>
     
@@ -67,6 +67,7 @@
     {% endfor %}
     {% endif %}
   </div>
+  </form>
 
 
 
@@ -100,7 +101,7 @@
       link.href = URL.createObjectURL(pdf.files[0]);
       const name = pdf.files[0].name;
       link.target = '_blank';
-      link.textContent = "${name} has been uploaded.";
+      link.textContent = "PDF has been uploaded.";
       link.classList.value = "uploaded-pdf font-semibold hover:underline my-2 ml-2"
       pdf_preview.appendChild(link);
     }

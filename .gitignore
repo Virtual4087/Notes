@@ -1,3 +1,5 @@
 db.sqlite3
-media
+media/images
+media/pdf_files
+media/profile_pictures
 __pycache__/
