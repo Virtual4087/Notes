@@ -23,32 +23,22 @@ To get started with Notebook, follow these steps:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/___/Notebook.git
+    git clone https://github.com/USERNAME/Notes.git
     ```
 
 2. Navigate to the project directory:
     ```bash
-    cd Notebook
+    cd Notes
     ```
 
-3. Set up a virtual environment:
-    ```bash
-    virtualenv venv
-    ```
-
-4. Activate the virtual environment:
-    - On Windows:
-        ```bash
-        .\venv\Scripts\activate
-        ```
-    - On Unix or MacOS:
-        ```bash
-        source venv/bin/activate
-        ```
-
-5. Install dependencies:
+3. Install dependencies:
     ```bash
     pip install -r requirements.txt
+    ```
+    
+3. Make Migrations:
+    ```bash
+    python manage.py makemigrations Notes_media
     ```
 
 6. Migrate the database:
@@ -62,6 +52,8 @@ To get started with Notebook, follow these steps:
     ```
 
 8. Open your web browser and navigate to the provided server (http://127.0.0.1:8000/) to access Notebook.
+
+***Note: Add subjects and education levels manually in the database for better experience.***
 
 ## Features 🌟
 
