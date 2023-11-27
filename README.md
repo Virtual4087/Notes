@@ -23,7 +23,7 @@ To get started with Notebook, follow these steps:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/USERNAME/Notes.git
+    git clone https://github.com/Virtual4087/Notes.git
     ```
 
 2. Navigate to the project directory:
