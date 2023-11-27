@@ -20,7 +20,7 @@ class Level(models.Model):
 
 class User(AbstractUser):
     level = models.ForeignKey(
-        Level, on_delete=models.SET_DEFAULT, related_name="users_of_this_level", default=1
+        Level, on_delete=models.SET_NULL, related_name="users_of_this_level", blank=True, null=True
     )
     following = models.ManyToManyField(
         "self", blank=True, related_name="follower", symmetrical=False
@@ -33,7 +33,7 @@ class User(AbstractUser):
 
     full_name = models.CharField(max_length=30, blank=False, default="None")
 
-    birthday = models.DateField(blank=True)
+    birthday = models.DateField(blank=True, null=True)
 
     location = models.CharField(max_length=20, blank=False, default="None")
 

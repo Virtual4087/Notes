@@ -22,7 +22,7 @@ def search(request: HttpRequest):
     parameters = request.GET
     if "sort" in parameters:
         sortby = parameters["sort"]
-        if sortby == "saved":
+        if sortby == "saved" and request.user.is_authenticated:
             posts = request.user.saved_post.all()
         elif sortby == "new":
             posts = Post.objects.all().order_by("-date")
@@ -30,7 +30,7 @@ def search(request: HttpRequest):
             posts = Post.objects.annotate(num_likes=Count("like")).order_by(
                 "-num_likes"
             )
-        elif sortby == "following":
+        elif sortby == "following" and request.user.is_authenticated:
             posts = Post.objects.filter(user__in=request.user.following.all())
         elif sortby == "old":
             posts = Post.objects.all().order_by("date")
@@ -84,9 +84,9 @@ def register(request):
             user.save()
             login(request, user)
             return redirect("index")
-        except IntegrityError:
+        except Exception as e:
             return render(
-                request, "register.html", {"message": "Username already taken!"}
+                request, "register.html", {"message": str(e)}
             )
     return render(request, "register.html")
 
