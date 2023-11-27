@@ -53,7 +53,8 @@ To get started with Notebook, follow these steps:
 
 8. Open your web browser and navigate to the provided server (http://127.0.0.1:8000/) to access Notebook.
 
-***Note: Add subjects and education levels manually in the database for better experience.***
+
+### ***Note: Add subjects and education levels manually in the database to be able to create posts.***
 
 ## Features 🌟
 
